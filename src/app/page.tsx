@@ -1,21 +1,23 @@
-import Image from "next/image";
+import Header from "@/components/header";
 
-// ui component
-import { Button } from "@/components/ui/button";
+// components
+import HeroUI from "@/features/home/components/heroUI";
+import HomeUI from "@/features/home/components/homeUI"
+
 
 export default function Home() {
   return (
     <>
-      <h1 className="heading-1">Hello</h1>
-      <h1 className="heading-2">Hello</h1>
-      <h1 className="heading-3">Hello</h1>
-      <Button variant={"primaryBtn"} size={"primaryBtn"}>Downloads for windows</Button>
-      <Button variant={"secondaryBtn"} size={"primaryBtn"}>Downloads for windows</Button>
-      <Button variant={"loginBtn"} size={"loginBtn"}>Login</Button>
-      <Button variant={"blueBtn"} size={"primaryBtn"}>Hello Login here</Button>
+      <div className="w-full h-screen bg-[#5865F2] relative">
+        <Header />
+        <div className="absolute bottom-0 h-[80vh] w-full z-[0]">
+          <HeroUI />
+        </div>
+      </div>
 
-
+      <div>
+        <HomeUI />
+      </div>
     </>
-
   );
 }

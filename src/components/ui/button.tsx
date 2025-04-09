@@ -21,7 +21,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        primaryBtn: "md:py-[16px] md:px-[32px] py-[10px] px-[25px] text-[18px]",
+        primaryBtn: "md:py-[13px] md:px-[32px] py-[10px] px-[25px] text-[18px]",
         loginBtn: "py-[7px] px-[15px]",
         icon: "size-9",
       },

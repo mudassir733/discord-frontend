@@ -13,19 +13,21 @@ import SideMenu from "@/components/sideMenu";
 // ui components
 import { Button } from './ui/button'
 
+// utils
+import { getTranslation } from '@/lib/i18';
 
-const links = [
-    { label: 'Downloads', href: '/downloads' },
-    { label: 'Nitro', href: '/nitro' },
-    { label: 'Discover', href: '/servers' },
-    { label: 'Safty', href: '/safty' },
-    { label: 'Support', href: '/support' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Career', href: '/career' },
-]
 
-const header = () => {
+// interfaces
+interface HeaderProps {
+    locale: 'en' | 'fr'
+}
+
+
+
+
+const header = ({ locale }: HeaderProps) => {
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
+    const safeLocale = locale === 'en' || locale === 'fr' ? locale : 'en'
 
     useEffect(() => {
         if (menuOpen) {
@@ -38,6 +40,16 @@ const header = () => {
         };
     }, [menuOpen]);
     const closeMenu = () => setMenuOpen(false);
+
+    const links = [
+        { label: getTranslation(safeLocale, "download"), href: '/downloads' },
+        { label: getTranslation(safeLocale, "nitro"), href: '/nitro' },
+        { label: getTranslation(safeLocale, "Discover"), href: '/servers' },
+        { label: getTranslation(safeLocale, "Safty"), href: '/safty' },
+        { label: getTranslation(safeLocale, "Support"), href: '/support' },
+        { label: getTranslation(safeLocale, "Blog"), href: '/blog' },
+        { label: getTranslation(safeLocale, "Career"), href: '/career' },
+    ]
 
     return (
         <div className='w-full h-[80px] bg-transparent flex items-center justify-between md:px-[120px] px-[20px] '>
@@ -56,7 +68,7 @@ const header = () => {
                 </ul>
             </div>
             <div className='flex items-center gap-2 flex-row-reverse'>
-                <Button variant={"loginBtn"} size={"loginBtn"}>Login</Button>
+                <Button variant={"loginBtn"} size={"loginBtn"}>{getTranslation(safeLocale, "Login")}</Button>
 
                 <div className='md:hidden flex'>
                     <Ellipsis size={48} cursor="pointer" color='#fff' onClick={() => setMenuOpen(!menuOpen)} />

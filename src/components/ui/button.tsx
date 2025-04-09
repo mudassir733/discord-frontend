@@ -15,14 +15,13 @@ const buttonVariants = cva(
         secondaryBtn: "bg-[#23272A] rounded-[28px] cursor-pointer flex items-center gap-[12px] shadow-lg hover:shadow-none transition duration-200 text-[#fff]",
         blueBtn: "bg-[#5865F2] rounded-[28px] cursor-pointer flex items-center gap-[12px] shadow-lg hover:shadow-none transition duration-200 text-[#fff]",
         loginBtn: "bg-[#fff] shadow-lg hover:shadow-none transition duration-200 text-[#111] cursor-pointer rounded-full",
-
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        primaryBtn: "py-[16px] px-[32px] text-[18px]",
+        primaryBtn: "md:py-[13px] md:px-[32px] py-[10px] px-[25px] text-[18px]",
         loginBtn: "py-[7px] px-[15px]",
         icon: "size-9",
       },

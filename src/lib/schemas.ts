@@ -10,3 +10,19 @@ export const loginSchema = z.object({
 
 
 export type LoginFormData = z.infer<typeof loginSchema>;
+
+
+
+export const registerSchema = z.object({
+    email: z.string().email({ message: "Please enter a valid email address." }),
+    displayName: z.string(),
+    username: z.string().min(2, { message: "Username must be at least 2 characters." }),
+    password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+    birthMonth: z.string({ required_error: "Please select a month." }),
+    birthDay: z.string({ required_error: "Please select a day." }),
+    birthYear: z.string({ required_error: "Please select a year." }),
+    marketingEmails: z.boolean().default(false).optional(),
+
+})
+
+export type RegisterFromData = z.infer<typeof registerSchema>

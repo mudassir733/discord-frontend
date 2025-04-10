@@ -54,8 +54,6 @@ const Footer: React.FC<FooterProps> = ({ locale }) => {
                             IMAGINE A<br />
                             PLACE
                         </h2>
-
-
                         <div className="flex items-center mb-6 gap-2 justify-items-start">
                             <div className='w-[80px] md:w-[100px]'>
                                 <Image

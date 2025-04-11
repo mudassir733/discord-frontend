@@ -2,7 +2,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import Link from "next/link"
+import Cookies from "js-cookie"
+import { useRouter } from "next/navigation";
 
+// hooks
+import useRegister, { RegisterRequest } from "@/hooks/auth/useRegister"
 
 // ui component
 import { Button } from "@/components/ui/button"
@@ -14,8 +18,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 // validation schema
 import { registerSchema, RegisterFromData } from "@/lib/schemas"
 
-
 export default function RegisterForm() {
+    const router = useRouter();
     const form = useForm<RegisterFromData>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -23,14 +27,35 @@ export default function RegisterForm() {
             displayName: "",
             username: "",
             password: "",
+            birthMonth: "",
+            birthDay: "",
+            birthYear: "",
             marketingEmails: false,
         },
     })
 
-    function onSubmit(data: RegisterFromData) {
-        console.log(data)
+    const { mutate, error, isPending } = useRegister({
+        onSuccess: (data) => {
+            Cookies.set("access_token", data.access_token, { expires: 30 });
+            router.push("/channels")
+            return data;
+        },
+        onError: (err) => {
+            console.log("Registration failed:", err.response?.data?.error);
+        },
+    });
 
-    }
+    const onSubmit = (data: RegisterFromData) => {
+        const dateOfBirth = `${data.birthMonth.padStart(2, "0")}-${data.birthDay.padStart(2, "0")}-${data.birthYear}`;
+        const apiData: RegisterRequest = {
+            userName: data.username,
+            displayName: data.displayName,
+            email: data.email,
+            password: data.password,
+            dateOfBirth: dateOfBirth,
+        };
+        mutate(apiData);
+    };
     const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString())
 
     const months = [
@@ -221,9 +246,14 @@ export default function RegisterForm() {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="w-full bg-[#5865f2] hover:bg-[#4752c4] text-white">
-                            Continue
+                        <Button type="submit" className="w-full bg-[#5865f2] hover:bg-[#4752c4] text-white cursor-pointer">
+                            {isPending ? "Registering..." : "Continue"}
                         </Button>
+                        <div className="text-center flex items-center justify-center">
+                            {error && (
+                                <p className="text-red-400 font-semibold">{error?.response?.data?.error}</p>
+                            )}
+                        </div>
                         <div className="text-xs text-[#b9bbbe] mt-2">
                             By registering, you agree to Discord's{" "}
                             <Link href="#" className="text-[#00a8fc] hover:underline">

@@ -1,5 +1,7 @@
+"use client"
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
@@ -8,11 +10,12 @@ const notoSans = Noto_Sans({
   weight: ["400", "700", "300"],
 });
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: "Discord Clone",
   description: "Discord Clone",
 };
 
+const queryClient = new QueryClient();
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +26,11 @@ export default function RootLayout({
       <body
         className={`${notoSans.variable} antialiased`}
       >
-        {children}
+        <QueryClientProvider client={queryClient}>
+          <main>
+            {children}
+          </main>
+        </QueryClientProvider>
       </body>
     </html>
   );

@@ -4,9 +4,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
-// utils
+// validation schema
 import { loginSchema, LoginFormData } from '@/lib/schemas'
+
+// hooks
+import useLogin, { LoginRequest } from '@/hooks/auth/useLogin';
 
 // assets
 import QrCodeImg from "@/assets/images/Qr.svg"
@@ -24,16 +29,34 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const login = () => {
+    const router = useRouter()
+
     const form = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: "",
+            identifier: "",
             password: "",
         },
     });
 
+    const { mutate, error, isPending } = useLogin({
+        onSuccess: (data) => {
+            Cookies.set("access_token", data.access_token, { expires: 30 })
+            router.push("/channels")
+            return data;
+        },
+        onError: (err) => {
+            console.log(err.response?.data?.error)
+        }
+    })
+
     const onSubmit = (data: LoginFormData) => {
-        console.log("Form submitted:", data);
+        const dataToSend: LoginRequest = {
+            identifier: data.identifier,
+            password: data.password
+        }
+
+        mutate(dataToSend)
     };
     return (
         <div className='w-full h-fit md:h-screen bg-[#5865F2] bg-cover bg-center bg-no-repeat flex items-center justify-center flex-col p-4 md:p-0'>
@@ -48,7 +71,7 @@ const login = () => {
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                                 <FormField
                                     control={form.control}
-                                    name="email"
+                                    name="identifier"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Email or Phone Number</FormLabel>
@@ -78,12 +101,17 @@ const login = () => {
                                     <Link href="" className='text-[#00AFF4] text-sm hover:underline'>Forgot your password?</Link>
                                 </div>
                                 <div className='w-full mt-3'>
-                                    <Button type='submit' variant={"blueBtn"} size={"loginBtn"} className='w-full rounded-none py-3'>Login</Button>
+                                    <Button type='submit' variant={"blueBtn"} size={"loginBtn"} className='w-full rounded-none py-3'>{isPending ? "Login in..." : "Login"}</Button>
+                                </div>
+                                <div className="text-center flex items-center justify-center">
+                                    {error && (
+                                        <p className="text-red-400 font-semibold">{error?.response?.data?.error}</p>
+                                    )}
                                 </div>
 
                                 <div className=' mt-3 flex gap-2'>
                                     <span className='text-[#A3A6AA] text-sm'>Need An Account?</span>
-                                    <Link className='text-[#00AFF4] text-sm hover:underline' href="">Register</Link>
+                                    <Link className='text-[#00AFF4] text-sm hover:underline' href="/en/register">Register</Link>
 
                                 </div>
                             </form>

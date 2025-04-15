@@ -68,7 +68,9 @@ const header = ({ locale }: HeaderProps) => {
                 </ul>
             </div>
             <div className='flex items-center gap-2 flex-row-reverse'>
-                <Button variant={"loginBtn"} size={"loginBtn"}>{getTranslation(safeLocale, "Login")}</Button>
+                <Link href="/en/login">
+                    <Button variant={"loginBtn"} size={"loginBtn"}>{getTranslation(safeLocale, "Login")}</Button>
+                </Link>
 
                 <div className='md:hidden flex'>
                     <Ellipsis size={48} cursor="pointer" color='#fff' onClick={() => setMenuOpen(!menuOpen)} />

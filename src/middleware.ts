@@ -1,17 +1,27 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+export function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
 
 
-export function middleware(req: NextRequest) {
-
-    if (req.nextUrl.pathname.startsWith("/")) {
-        return NextResponse.redirect(new URL('/en', req.url))
-
+    if (pathname === "/") {
+        return NextResponse.redirect(new URL("/en", request.url));
     }
 
+
+    if (
+        pathname.startsWith("/_next") ||
+        pathname.startsWith("/api") ||
+        pathname.includes(".")
+    ) {
+        return NextResponse.next();
+    }
+
+
+    return NextResponse.next();
 }
 
 export const config = {
-    matcher: '/',
-}
+    matcher: ["/", "/((?!_next|api).*)"],
+};

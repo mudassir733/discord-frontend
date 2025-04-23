@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -27,9 +28,9 @@ export default function RootLayout({
         className={`${notoSans.variable} antialiased`}
       >
         <QueryClientProvider client={queryClient}>
-          <main>
-            {children}
-          </main>
+          <Toaster />
+          {children}
+
         </QueryClientProvider>
       </body>
     </html>

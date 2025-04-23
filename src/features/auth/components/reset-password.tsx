@@ -8,14 +8,13 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 // validation schema
-import { loginSchema, LoginFormData } from '@/lib/schemas'
+import { resetPasswordSchema, ResetPasswordFormData } from '@/lib/schemas'
 
 // hooks
-import useLogin, { LoginRequest } from '@/hooks/auth/useLogin';
+import useResetPassword, { ResetPasswordRequest } from '@/hooks/auth/useResetPassword';
 
 // assets
 import QrCodeImg from "@/assets/images/Qr.svg"
-
 
 // ui component
 import {
@@ -28,47 +27,43 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import { toast } from "sonner"
 
-const login = () => {
+
+const ResetPassword = () => {
     const router = useRouter()
 
-    const form = useForm<LoginFormData>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<ResetPasswordFormData>({
+        resolver: zodResolver(resetPasswordSchema),
         defaultValues: {
-            identifier: "",
-            password: "",
+            email: "",
         },
     });
 
-    const { mutate, error, isPending } = useLogin({
+    const { mutate, error, isPending } = useResetPassword({
         onSuccess: (data) => {
-            Cookies.set("access_token", data.access_token, { expires: 30 })
-            router.push("/channels")
-            return data;
+            console.log("Success", data)
+            toast.success("Email has been sent successfully", {
+                description: data?.message,
+            })
+            return data
         },
-        onError: (err) => {
-            console.log(err.response?.data?.error)
+        onError: (error) => {
+            console.log("Error", error.message)
+            toast.error("Error occurred", {
+                description: error?.response?.data?.error || error.message,
+            })
+            throw new Error(error.message)
         }
     })
 
-    const onSubmit = (data: LoginFormData) => {
-        const dataToSend: LoginRequest = {
-            identifier: data.identifier,
-            password: data.password
-        }
 
-        mutate(dataToSend)
+    const onSubmit = (data: ResetPasswordFormData) => {
+        const payload: ResetPasswordRequest = {
+            email: data.email,
+        }
+        mutate(payload);
+        form.setValue("email", "")
     };
     return (
         <div className='w-full h-fit md:h-screen bg-[#5865F2] bg-cover bg-center bg-no-repeat flex items-center justify-center flex-col p-4 md:p-0'>
@@ -76,14 +71,13 @@ const login = () => {
                 <section className='flex flex-col md:flex-row items-center gap-14'>
                     <div className='md:flex-2 w-full'>
                         <div className='text-center pb-6'>
-                            <h2 className='text-[25px] !text-white'>Welcom back!</h2>
-                            <p className='text-[#A3A6AA]'>We're so excited to see you again!</p>
+                            <h2 className='text-[25px] !text-white'>Reset Your Password!</h2>
                         </div>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                                 <FormField
                                     control={form.control}
-                                    name="identifier"
+                                    name="email"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Email or Phone Number</FormLabel>
@@ -95,36 +89,18 @@ const login = () => {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Password</FormLabel>
-                                            <FormControl>
-                                                <Input  {...field} />
-                                            </FormControl>
 
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <div className=' mt-1'>
-                                    <Link href="/password-reset" className='text-[#00AFF4] text-sm hover:underline'>Forgot your password?</Link>
-                                </div>
                                 <div className='w-full mt-3'>
-                                    <Button type='submit' variant={"blueBtn"} size={"loginBtn"} className='w-full rounded-none py-3'>{isPending ? "Login in..." : "Login"}</Button>
+                                    <Button type='submit' variant={"blueBtn"} size={"loginBtn"} className='w-full rounded-none py-3'>{isPending ? "Sending..." : "Reset Password"}</Button>
                                 </div>
                                 <div className="text-center flex items-center justify-center">
                                     {error && (
                                         <p className="text-red-400 font-semibold">{error?.response?.data?.error}</p>
                                     )}
                                 </div>
-
                                 <div className=' mt-3 flex gap-2'>
                                     <span className='text-[#A3A6AA] text-sm'>Need An Account?</span>
                                     <Link className='text-[#00AFF4] text-sm hover:underline' href="/en/register">Register</Link>
-
                                 </div>
                             </form>
                         </Form>
@@ -147,4 +123,4 @@ const login = () => {
 }
 
 
-export default login
+export default ResetPassword

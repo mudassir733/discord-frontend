@@ -1,17 +1,28 @@
 "use client";
 
 import { useEffect } from "react";
+import { Suspense } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import Image from "next/image";
+
+
+// assets
+import forgetPassword from "@/assets/images/forgetPass.jpg"
+
+// components
 import { useResetPasswordVerify } from "@/hooks/auth/useResetPasswordVerify";
 import { useResetPasswordSubmit } from "@/hooks/auth/useResetPasswordSubmit";
+import { Loading } from "@/components/Loading";
+
+
+
+// schemas
 import { resetPasswordSubmitSchema, ResetPasswordSubmitFormData } from "@/lib/schemas";
 
-
-
-import forgetPassword from "@/assets/images/forgetPass.jpg"
+// ui components
 import {
     Form,
     FormControl,
@@ -22,10 +33,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 
+
+// suspense
 export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <ResetPasswordContent />
+        </Suspense>
+    )
+}
+
+
+function ResetPasswordContent() {
     const router = useRouter();
     const { token } = useParams();
     console.log("Token", token);
@@ -81,7 +102,8 @@ export default function ResetPasswordPage() {
     };
 
     if (isVerifying) {
-        return <div>Loading...</div>;
+        return <Loading />
+
     }
 
     if (verifyError) {

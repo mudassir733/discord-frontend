@@ -23,16 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${notoSans.variable} antialiased`}
-      >
-        <QueryClientProvider client={queryClient}>
-          <Toaster />
-          {children}
 
-        </QueryClientProvider>
-      </body>
-    </html>
+    <QueryClientProvider client={queryClient}>
+      <Toaster />
+      {children}
+
+    </QueryClientProvider>
+
   );
 }

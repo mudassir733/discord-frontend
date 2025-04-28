@@ -24,7 +24,7 @@ export default function layout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${notoSans.variable} antialiased`}>
+            <body className={`${notoSans.variable} antialiased overflow-y-hidden`} >
                 <QueryClientProvider client={queryClient}>
                     <Toaster />
                     {children}

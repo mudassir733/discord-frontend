@@ -52,7 +52,7 @@ export default function ServerSidebar() {
     const currentServerId = pathname.split("/")[2];
 
     return (
-        <div className="w-[72px] h-screen bg-[#1e1f22] flex flex-col items-center pt-3 space-y-2 overflow-y-auto px-5 overflow-x-hidden">
+        <div className="w-[72px] h-screen bg-[#121214] flex flex-col items-center pt-3 space-y-2 overflow-y-auto px-5 overflow-x-hidden border-r-[1px] border-zinc-700/90">
             <Link href="/channels/me" className="relative">
                 <div
                     className={cn(

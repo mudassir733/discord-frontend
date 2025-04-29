@@ -1,6 +1,12 @@
 "use client";
-import { Mic, Headphones, Settings } from "lucide-react";
+import { Mic, Headphones, Settings, Plus } from "lucide-react";
+import Image from "next/image";
 
+
+// assets
+import friendIcon from "@/assets/images/friend.svg"
+import nitro from "@/assets/images/nitro.svg"
+import message from "@/assets/images/message.svg"
 
 
 
@@ -8,12 +14,22 @@ import { Mic, Headphones, Settings } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Tabs } from "@/components/ui/tabs";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import StatusIndicator, { StatusType } from "@/components/status-indicator";
 
+
+
+interface Friends {
+    id: string;
+    avatar: string;
+    name: string;
+    status: StatusType;
+}
 // Mock data for DMs
-const friends = [
-    { id: "1", name: "M.Awais", avatar: "/avatars/mawais.png", status: "online" },
-    { id: "2", name: "Gatty !", avatar: "/avatars/gatty.png", status: "online" },
-    { id: "3", name: "Hawk", avatar: "/avatars/hawk.png", status: "idle" },
+const friends: Friends[] = [
+    { id: "1", name: "M.Awais", avatar: "/avatars/mawais.png", status: "Online" },
+    { id: "2", name: "Gatty !", avatar: "/avatars/gatty.png", status: "Online" },
+    { id: "3", name: "Hawk", avatar: "/avatars/hawk.png", status: "Idle" },
     { id: "4", name: "2b", avatar: "/avatars/2b.png", status: "dnd" },
     { id: "5", name: "Jacob", avatar: "/avatars/jacob.png", status: "offline" },
     { id: "6", name: "Cr0zY-jane", avatar: "/avatars/crzyjane.png", status: "offline" },
@@ -22,7 +38,7 @@ const friends = [
 
 export function FriendsSidebar() {
     return (
-        <div className="w-[280px] bg-[#2b2d31] flex flex-col">
+        <div className="w-[280px] bg-[#121214] flex flex-col">
             {/* Search Bar */}
             <div className="p-3">
                 <Input
@@ -30,48 +46,42 @@ export function FriendsSidebar() {
                     className="bg-[#1e1f22] text-white border-none"
                 />
             </div>
-
-
             <Tabs className="flex-1">
 
-
-                {/* Navigation Links */}
-                <div className="px-3 py-2 space-y-2">
-                    <div className="flex items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
-                        <span>Friends</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
-                        <span>Nitro</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-400 hover:text-white cursor-pointer">
-                        <span>Shop</span>
-                    </div>
-                </div>
+                <TabsList className="px-3 flex flex-col items-start gap-1 border-b-[1px] border-zinc-800/90">
+                    <TabsTrigger value="friends" className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2">
+                        <Image src={friendIcon} alt="friend" />
+                        Friends
+                    </TabsTrigger>
+                    <TabsTrigger value="nitro" className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2">     <Image src={nitro} alt="nitro" />Nitro</TabsTrigger>
+                    <TabsTrigger value="shop" className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2">   <Image src={message} alt="message" />Shop</TabsTrigger>
+                </TabsList>
 
                 {/* Direct Messages */}
                 <div className="px-3 py-2">
-                    <h3 className="text-gray-400 text-xs font-semibold uppercase">Direct Messages</h3>
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-gray-400 text-xs font-semibold uppercase">Direct Messages</h3>
+                        <Plus size={18} className="text-gray-400 cursor-pointer" />
+                    </div>
                     <div className="mt-2 space-y-1">
                         {friends.map((friend) => (
                             <div
                                 key={friend.id}
-                                className="flex items-center gap-2 p-1 hover:bg-[#35363c] rounded cursor-pointer"
+                                className="flex items-center gap-2 transition-all duration-200 rounded-md p-1 hover:bg-zinc-800/90 cursor-pointer"
                             >
-                                <Avatar>
-                                    <AvatarImage src={friend.avatar} alt={friend.name} />
-                                    <AvatarFallback>{friend.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
+                                <div className="relative">
+                                    <Avatar className="bg-[#6765D3] ">
+                                        <AvatarImage src={friend.avatar} alt={friend.name} />
+                                        <AvatarFallback>{friend.name.charAt(0)}</AvatarFallback>
+
+
+                                    </Avatar>
+                                    <div className="absolute right-0 bottom-0">
+                                        <StatusIndicator status={friend.status} size="md" />
+                                    </div>
+                                </div>
                                 <span className="text-gray-300">{friend.name}</span>
-                                <div
-                                    className={`w-3 h-3 rounded-full ml-auto ${friend.status === "online"
-                                        ? "bg-green-500"
-                                        : friend.status === "idle"
-                                            ? "bg-yellow-500"
-                                            : friend.status === "dnd"
-                                                ? "bg-red-500"
-                                                : "bg-gray-500"
-                                        }`}
-                                />
+
                             </div>
                         ))}
                     </div>

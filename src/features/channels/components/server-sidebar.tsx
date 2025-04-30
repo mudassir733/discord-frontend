@@ -37,42 +37,36 @@ const servers = [
         hasNotification: true,
         notificationCount: 2,
     },
-    {
-        id: "8",
-        name: "N Server",
-        icon: "/me.png",
-        hasNotification: true,
-        notificationCount: 324,
-    },
-    { id: "9", name: "Profile", icon: "/me.png" },
+
+
+
+
 ];
 
 export default function ServerSidebar() {
     const pathname = usePathname();
     const currentServerId = pathname.split("/")[2];
+    console.log(currentServerId)
 
     return (
-        <div className="w-[72px] h-screen bg-[#121214] flex flex-col items-center pt-3 space-y-2 overflow-y-auto px-5 overflow-x-hidden border-r-[1px] border-zinc-700/90">
-            <Link href="/channels/me" className="relative">
+        <div className="w-[72px] h-screen bg-[#121214] flex flex-col items-center pt-3 space-y-2 overflow-y-auto custom-scrollbar overflow-x-hidden border-r-[1px] border-zinc-800/90">
+            <Link href="/channels/me" className="relative  ">
                 <div
                     className={cn(
-                        "w-12 h-12 rounded-2xl bg-[#5865f2] flex items-center justify-center cursor-pointer transition-all mb-2 relative",
-                        currentServerId === "@me"
-                            ? "rounded-2xl bg-[#5865f2]"
-                            : "rounded-full hover:rounded-2xl bg-[#5865f2] hover:bg-[#5865f2]"
+                        "w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all relative",
                     )}
                 >
-                    <Image src={meIcon} alt="me icon" className="w-12 h-12 rounded-full object-cover" />
+                    <Image src={meIcon} alt="me icon" width={48}
+                        height={48} className="w-9 h-9 rounded object-cover" />
                 </div>
                 <span
                     className={cn(
-                        "w-[4px] bg-white rounded-tr-lg rounded-br-lg absolute -left-3 top-1/2 -translate-y-1/2",
-                        currentServerId === "@me" ? "h-[45px]" : "h-[20px]"
+                        "w-[4px] bg-white rounded-tr-lg transition-all duration-200 rounded-br-lg absolute -left-3 top-1/2 -translate-y-1/2",
+                        currentServerId === "me" ? "h-[45px]" : "h-[20px]"
                     )}
                 />
             </Link>
 
-            <div className="w-8 h-0.5 bg-[#35363c] rounded-full my-1"></div>
 
             {servers
                 .filter((server) => !server.isHome)
@@ -81,8 +75,8 @@ export default function ServerSidebar() {
                         <div className="relative">
                             <div
                                 className={cn(
-                                    "w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all relative",
-                                    currentServerId === server.id ? "rounded-2xl" : "rounded-full hover:rounded-2xl"
+                                    "w-12 h-12 rounded-full  flex items-center justify-center cursor-pointer transition-all relative",
+                                    currentServerId === server.id ? "rounded-2xl" : "rounded-md hover:rounded-2xl"
                                 )}
                             >
                                 {server.isText ? (
@@ -95,7 +89,7 @@ export default function ServerSidebar() {
                                         alt={server.name}
                                         width={48}
                                         height={48}
-                                        className="w-12 h-12 rounded-full object-cover"
+                                        className="w-9 h-9  object-cover"
                                     />
                                 )}
                             </div>
@@ -113,7 +107,7 @@ export default function ServerSidebar() {
 
                             <span
                                 className={cn(
-                                    "w-[4px] bg-white rounded-tr-lg rounded-br-lg absolute -left-3 top-1/2 -translate-y-1/2",
+                                    "w-[4px] bg-white rounded-tr-lg transition-all duration-200 rounded-br-lg absolute -left-3 top-1/2 -translate-y-1/2",
                                     currentServerId === server.id ? "h-[45px]" : "h-[20px]"
                                 )}
                             />

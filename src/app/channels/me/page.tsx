@@ -66,6 +66,126 @@ const invoices: Invoice[] = [
         username: "@arsalam2",
         status: "Pending"
     },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
+    {
+        invoice: "INV009",
+        icon: "/me.png",
+        name: "Arsalan",
+        username: "@arsalam2",
+        status: "Pending"
+    },
 
 ]
 
@@ -98,7 +218,7 @@ export default function FriendsPage() {
 
     return (
         <>
-            <div className="flex-1 bg-[#1A1A1E] py-4 h-full overflow-y-hidden">
+            <div className="flex-1 bg-[#1A1A1E] py-3 h-full overflow-y-hidden">
                 <div className="flex px-4 items-center gap-2 border-b-[1px] border-zinc-600/90 pb-2">
                     <Image src={friendicn} alt="friend" />
                     <h1 className="text-[#dadada] text-md font-semibold">Friends</h1>
@@ -163,7 +283,7 @@ export default function FriendsPage() {
                             <Input type="text" placeholder="Search" onChange={handleSearchResult} value={searchQuery} className="rounded-md placeholder:text-gray-400" />
                         </div>
 
-                        <div className="px-5 mt-4  h-screen overflow-y-auto">
+                        <div className="px-5 mt-4  h-screen overflow-y-auto custom-scrollbar">
                             <Table>
                                 <TableHeader>
 
@@ -215,9 +335,13 @@ export default function FriendsPage() {
 
                                 </TableBody>
                             </Table>
+
+
+
                         </div>
                     </>
                 )}
+
 
 
             </div>

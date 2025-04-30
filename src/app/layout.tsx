@@ -28,7 +28,7 @@ export default function layout({
     console.log(pathname)
     return (
         <html lang="en">
-            <body className={`${notoSans.variable} antialiased ${pathname === "/en" ? "overflow-y-auto" : "overflow-y-hidden"}`} >
+            <body className={`${notoSans.variable}  antialiased ${pathname === "/en" ? "overflow-y-auto" : "overflow-y-hidden"}`} >
                 <QueryClientProvider client={queryClient}>
                     <Toaster />
                     {children}

@@ -4,6 +4,7 @@ import { Metadata } from 'next'
 // components
 import { FriendsSidebar } from '@/features/channels/components/friend-sidebar'
 import ServerSidebar from '@/features/channels/components/server-sidebar'
+import UserProfile from '@/features/channels/components/user-profile'
 
 export const metaData: Metadata = {
     title: "Channels",
@@ -16,12 +17,18 @@ export default function layout({
     children: React.ReactNode,
 }>) {
     return (
-        <div className="flex min-h-screen bg-[#1e1f22] text-white">
+        <div className="flex overflow-y-auto h-screen bg-[#1e1f22] text-white">
             {/* Server Sidebar */}
-            <ServerSidebar />
+            <div className='flex relative'>
+                <ServerSidebar />
 
-            {/* Friends Sidebar */}
-            <FriendsSidebar />
+                <div className='absolute z-50 w-full bottom-0 px-2 pb-1'>
+                    <UserProfile />
+                </div>
+
+                {/* Friends Sidebar */}
+                <FriendsSidebar />
+            </div>
 
             {/* Main Content */}
             <main className="flex-1 flex h-full">

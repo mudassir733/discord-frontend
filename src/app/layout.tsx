@@ -5,6 +5,7 @@ import { Noto_Sans } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import "../app/[locale]/globals.css";
+import { usePathname } from 'next/navigation';
 
 
 const notoSans = Noto_Sans({
@@ -17,14 +18,17 @@ export const metaData: Metadata = {
     description: "channels for users"
 }
 const queryClient = new QueryClient();
+
 export default function layout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const pathname = usePathname();
+    console.log(pathname)
     return (
         <html lang="en">
-            <body className={`${notoSans.variable} antialiased overflow-y-hidden`} >
+            <body className={`${notoSans.variable}  antialiased ${pathname === "/en" ? "overflow-y-auto" : "overflow-y-hidden"}`} >
                 <QueryClientProvider client={queryClient}>
                     <Toaster />
                     {children}

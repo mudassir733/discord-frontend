@@ -143,8 +143,31 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* @layer utilities {
-  .dark {
-    @apply &:is(.dark *);
+@layer utilities {
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #121214 transparent;
+
   }
-} */
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #202225;
+    border-radius: 50%;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    overflow-y: hidden;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #333333;
+  }
+}

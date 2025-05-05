@@ -1,13 +1,28 @@
 
 "use client";
-
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
+
+// ui components
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner"
+
 // assets
 import meIcon from "@/assets/images/me.png";
+import { Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import CreateServerModal from "@/components/modals/create-server-modals";
 
 // Server data with notification counts and indicators
 const servers = [
@@ -28,7 +43,7 @@ const servers = [
         hasNotification: true,
         notificationCount: 14,
     },
-    { id: "5", name: "FZ Server", icon: "/placeholder.svg?height=48&width=48&text=FZ", isText: true },
+    { id: "5", name: "FZ Server", icon: "/me.png", isText: false },
     { id: "6", name: "Purple Server", icon: "/me.png" },
     {
         id: "7",
@@ -39,14 +54,68 @@ const servers = [
     },
 
 
-
-
 ];
 
 export default function ServerSidebar() {
     const pathname = usePathname();
     const currentServerId = pathname.split("/")[2];
-    console.log(currentServerId)
+    const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+    const [serverName, setServerName] = useState("");
+    const [serverIcon, setServerIcon] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+
+
+    useEffect(() => {
+        if (serverIcon) {
+            const url = URL.createObjectURL(serverIcon);
+            setPreview(url);
+            return () => URL.revokeObjectURL(url);
+        }
+    }, [serverIcon]);
+
+    { preview && <img src={preview} alt="Preview" className="w-24 h-24 rounded-full" /> }
+
+    const handleCreateServer = () => {
+        setIsTemplateModalOpen(true);
+    };
+
+    const handleTemplateSelect = (template: string) => {
+        setSelectedTemplate(template);
+        setIsTemplateModalOpen(false);
+        setIsDetailsModalOpen(true);
+    };
+
+    const handleCreate = async () => {
+        if (!serverName) {
+            toast.error("Please enter a server name.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("name", serverName);
+        if (serverIcon) formData.append("icon", serverIcon);
+
+
+        try {
+            const response = await fetch("/api/create-server", {
+                method: "POST",
+                body: formData,
+            });
+            const data = await response.json();
+            if (data.success) {
+                servers.push({ id: crypto.randomUUID(), name: serverName, icon: "/icons/default.png" });
+                setIsDetailsModalOpen(false);
+                setServerName("");
+                setServerIcon(null);
+                toast.success("Server created successfully!");
+            }
+        } catch (error) {
+            console.error("Failed to create server:", error);
+            toast.error("Failed to create server.");
+        }
+    };
 
     return (
         <div className="w-[72px] h-screen bg-[#121214] flex flex-col items-center pt-3 space-y-2 overflow-y-auto custom-scrollbar overflow-x-hidden border-r-[1px] border-zinc-800/90">
@@ -114,6 +183,28 @@ export default function ServerSidebar() {
                         </div>
                     </Link>
                 ))}
+
+
+            <div className="p-2">
+                <Button
+                    size="icon"
+                    className=" w-10 h-10 rounded-md  flex items-center justify-center cursor-pointer  relative bg-zinc-800/90 hover:bg-[#5865F2] transition-all duration-200"
+                    onClick={handleCreateServer}
+                >
+                    <Plus className="text-white" />
+                </Button>
+            </div>
+
+
+
+            <CreateServerModal isOpen={isTemplateModalOpen} onClose={() => setIsTemplateModalOpen(false)} />
+
+
         </div>
+
+
+
+
+
     );
 }

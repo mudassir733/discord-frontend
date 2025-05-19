@@ -1,14 +1,13 @@
+
 "use client";
 import { Plus } from "lucide-react";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 
 // assets
-import friendIcon from "@/assets/images/friend.svg"
-import nitro from "@/assets/images/nitro.svg"
-import message from "@/assets/images/message.svg"
-
-
+import friendIcon from "@/assets/images/friend.svg";
+import nitro from "@/assets/images/nitro.svg";
+import message from "@/assets/images/message.svg";
 
 // ui components
 import { Input } from "@/components/ui/input";
@@ -18,9 +17,7 @@ import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import StatusIndicator, { StatusType } from "@/components/status-indicator";
 import ResizableDiv from "@/components/resizable-div";
 
-
-
-interface Friends {
+export interface Friends {
     id: string;
     avatar: string;
     name: string;
@@ -39,14 +36,18 @@ const friends: Friends[] = [
     { id: "9", name: "Haroon arshad", avatar: "/avatars/haroon.png", status: "offline" },
     { id: "10", name: "Haroon arshad", avatar: "/avatars/haroon.png", status: "offline" },
     { id: "11", name: "Haroon arshad", avatar: "/avatars/haroon.png", status: "offline" },
-
-
 ];
 
 export function FriendsSidebar() {
+    const router = useRouter();
+
+    const handleFriendClick = (friendId: string) => {
+        router.push(`/channels/me/${friendId}`);
+    };
+
     return (
         <ResizableDiv initialWidth={280} minWidth={180} maxWidth={340}>
-            <div className=" flex flex-col h-screen">
+            <div className="flex flex-col h-screen">
                 {/* Search Bar */}
                 <div className="p-2 border-b-[1px] border-zinc-800/90">
                     <Input
@@ -55,18 +56,32 @@ export function FriendsSidebar() {
                     />
                 </div>
                 <Tabs className="flex-1 mt-2">
-
                     <TabsList className="px-3 flex flex-col items-start gap-1 border-b-[1px] border-zinc-800/90">
-                        <TabsTrigger value="friends" className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2">
+                        <TabsTrigger
+                            value="friends"
+                            className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
+                        >
                             <Image src={friendIcon} alt="friend" />
                             Friends
                         </TabsTrigger>
-                        <TabsTrigger value="nitro" className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2">     <Image src={nitro} alt="nitro" />Nitro</TabsTrigger>
-                        <TabsTrigger value="shop" className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2">   <Image src={message} alt="message" />Shop</TabsTrigger>
+                        <TabsTrigger
+                            value="nitro"
+                            className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
+                        >
+                            <Image src={nitro} alt="nitro" />
+                            Nitro
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="shop"
+                            className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
+                        >
+                            <Image src={message} alt="message" />
+                            Shop
+                        </TabsTrigger>
                     </TabsList>
 
                     {/* Direct Messages */}
-                    <div className="px-3 py-2 ">
+                    <div className="px-3 py-2">
                         <div className="flex items-center justify-between">
                             <h3 className="text-gray-400 text-xs font-semibold uppercase">Direct Messages</h3>
                             <Plus size={18} className="text-gray-400 cursor-pointer" />
@@ -76,9 +91,10 @@ export function FriendsSidebar() {
                                 <div
                                     key={friend.id}
                                     className="flex items-center gap-2 transition-all duration-200 rounded-md p-1 text-sm hover:bg-zinc-800/90 cursor-pointer"
+                                    onClick={() => handleFriendClick(friend.id)}
                                 >
                                     <div className="relative">
-                                        <Avatar className="bg-[#6765D3] ">
+                                        <Avatar className="bg-[#6765D3]">
                                             <AvatarImage src={friend.avatar} alt={friend.name} />
                                             <AvatarFallback>{friend.name.charAt(0)}</AvatarFallback>
                                         </Avatar>
@@ -87,16 +103,12 @@ export function FriendsSidebar() {
                                         </div>
                                     </div>
                                     <span className="text-gray-300">{friend.name}</span>
-
                                 </div>
                             ))}
                         </div>
                     </div>
                 </Tabs>
-
-
             </div>
         </ResizableDiv>
-
     );
 }

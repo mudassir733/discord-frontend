@@ -6,6 +6,7 @@ import { X, Camera, Plus } from "lucide-react"
 import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 
 interface CustomizeServerModalProps {
     onBack: () => void
@@ -16,6 +17,27 @@ interface CustomizeServerModalProps {
 export default function CustomizeServerModal({ onBack, onClose, onCreateServer }: CustomizeServerModalProps) {
     const [serverName, setServerName] = useState("Mudassir Ali's server")
     const [isUploading, setIsUploading] = useState(false)
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+
+    const handleFileChange = (event: any) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            setSelectedFile(file);
+            setPreviewUrl(null as any);
+            setIsUploading(false);
+        } else {
+            setSelectedFile(null);
+            setPreviewUrl(null as any);
+            alert('Please select a valid image file.');
+        }
+    };
+
+    const handleUploadClick = () => {
+        setIsUploading(true);
+        document.getElementById('fileInput')?.click();
+
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -23,6 +45,8 @@ export default function CustomizeServerModal({ onBack, onClose, onCreateServer }
             onCreateServer(serverName)
         }
     }
+
+
 
     return (
         <DialogContent className="bg-[#242429] border-none text-white p-0 max-w-md w-[440px] overflow-hidden animate-in fade-in slide-in-from-right-1/4 duration-300 ease-in-out">
@@ -37,18 +61,34 @@ export default function CustomizeServerModal({ onBack, onClose, onCreateServer }
                 <form onSubmit={handleSubmit} className="px-4 pb-4">
                     {/* Server Icon Upload */}
                     <div className="flex justify-center mb-6">
-                        <div className="relative">
-                            <div className="w-[85px] h-[85px] rounded-full border-2 border-dashed border-[#4f545c] flex items-center justify-center bg-[#232428]">
-                                <Camera size={24} className="text-[#b5bac1]" />
-                                <div className="text-[10px] text-[#b5bac1] uppercase mt-1">Upload</div>
+                        <div className="relative cursor-pointer" onClick={handleUploadClick}>
+                            <div className="w-[90px] h-[90px] rounded-full border-2 border-dashed border-[#4f545c] flex gap-1 items-center justify-center bg-[#232428]">
+                                {previewUrl ? (
+                                    <Image
+                                        src={previewUrl}
+                                        alt="Preview"
+                                        className="w-full h-full rounded-full object-cover"
+                                    />
+                                ) : (
+                                    <>
+                                        <Camera size={24} className="text-[#b5bac1]" />
+                                        <div className="text-[10px] text-[#b5bac1] uppercase mt-1">Upload</div>
+                                    </>
+                                )}
                             </div>
                             <button
                                 type="button"
-                                className="absolute bottom-0 right-0 w-6 h-6 bg-[#5865f2] rounded-full flex items-center justify-center"
-                                onClick={() => setIsUploading(!isUploading)}
+                                className="absolute cursor-pointer bottom-0 right-0 w-6 h-6 bg-[#5865f2] rounded-full flex items-center justify-center"
                             >
                                 <Plus size={16} className="text-white" />
                             </button>
+                            <input
+                                id="fileInput"
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleFileChange}
+                            />
                         </div>
                     </div>
 

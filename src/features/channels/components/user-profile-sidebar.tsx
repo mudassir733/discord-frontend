@@ -97,7 +97,7 @@ export default function UserProfileSidebar({ selectedFriend }: UserProfileSideba
                 )}
 
                 {/* View Full Profile Button */}
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center">
                     <button className="text-sm text-[#b5bac1] hover:text-white hover:underline">View Full Profile</button>
                 </div>
             </div>

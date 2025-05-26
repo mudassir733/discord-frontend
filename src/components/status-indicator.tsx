@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Moon } from 'lucide-react';
 
-export type StatusType = "Online" | "Idle" | "dnd" | "offline" | "streaming" | "invisible" | "Pending"
+export type StatusType = "offline" | "online" | "idle"
 
 interface StatusIndicatorProps {
     status: StatusType
@@ -40,7 +40,7 @@ export default function StatusIndicator({
     }
 
 
-    if (status === "Idle") {
+    if (status === "idle") {
         return (
             <div
                 className={cn(
@@ -62,8 +62,8 @@ export default function StatusIndicator({
             className={cn(
                 "rounded-full border-[#313338] border-2",
                 sizeClasses[size],
-                statusClasses[status],
-                pulsingAnimation && status === "Online" && "animate-pulse",
+                statusClasses[status as keyof typeof statusClasses],
+                pulsingAnimation && status === "online" && "animate-pulse",
                 className,
             )}
         />

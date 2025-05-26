@@ -24,9 +24,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-300 [--normal-bg:var(--red-500)] [--normal-text:var(--red-700)] dark:[--normal-text:var(--red-300)] [--normal-border:var(--red-500)]",
 
           info:
-            "bg-blue-500/10 border-blue-500/20 text-blue-700 dark:text-blue-300 [--normal-bg:var(--blue-500)] [--normal-text:var(--blue-700)] dark:[--normal-text:var(--blue-300)] [--normal-border:var(--blue-500)]",
+            "bg-[#6A66D2] border-blue-500/20 text-white dark:text-white [--normal-bg:var(--blue-500)] [--normal-text:var(--blue-700)] dark:[--normal-text:var(--blue-300)] [--normal-border:var(--blue-500)]",
 
-          title: "text-lg font-semibold",
+          title: "text-lg font-semibold text-white",
           description: "text-sm text-[#fff] dark:text-[#fff]",
 
           icon: "w-5 h-5",
@@ -34,7 +34,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           closeButton: "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full",
         },
 
-        duration: 6000,
+        duration: 12000,
 
         style: {
 
@@ -52,7 +52,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--white-500": "#fff", // Tailwind white-500
           "--green-500": "#22c55e", // Tailwind green-500
           "--red-500": "#ef4444", // Tailwind red-500
-          "--blue-500": "#3b82f6", // Tailwind blue-500
+          "--blue-500": "#6A66D2", // Tailwind blue-500
           "--green-700": "#15803d", // Tailwind green-700
           "--red-700": "#b91c1c", // Tailwind red-700
           "--blue-700": "#1d4ed8", // Tailwind blue-700

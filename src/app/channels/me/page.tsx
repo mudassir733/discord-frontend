@@ -1,10 +1,15 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { MessageCircle, EllipsisVertical, Check, X } from 'lucide-react';
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 
+
+
+// store
+import { RootState } from "@/store/store";
 
 // components
 import { ActiveNow } from "@/features/channels/components/activeNow";
@@ -15,6 +20,9 @@ import { useFriends } from "@/hooks/users/getFriends";
 import { useAddFriend } from "@/hooks/users/useAddFriends";
 import { useNotificationSocket } from "@/hooks/users/useNotifications";
 import { usePendingFriendRequests } from "@/hooks/users/usePendingFriendRequest";
+import { useAcceptFriendRequest } from "@/hooks/users/useAcceptFriendRequest";
+import { useRejectFriendRequest } from "@/hooks/users/useRejectFriendRequest";
+import { useFetchFriendRequests } from "@/hooks/users/useFetchFriendRequest"
 
 
 // assets
@@ -35,7 +43,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils";
-import { useAcceptFriendRequest } from "@/hooks/users/useAcceptFriendRequest";
 
 
 interface FriendRequest {
@@ -53,6 +60,12 @@ interface JwtPayload {
     [key: string]: any;
 }
 
+interface Friend {
+    id: string;
+    username: string;
+    status?: StatusType;
+}
+
 export default function FriendsPage() {
     const [activeTab, setActiveTab] = useState<"online" | "all" | "pending" | "idle" | "add">("online");
     const [searchQuery, setSearchQuery] = useState("");
@@ -61,6 +74,12 @@ export default function FriendsPage() {
     const [userId, setUserId] = useState<string | null>(null);
     const [pendingCount, setPendingCount] = useState(0);
     const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);
+    const dispatch = useDispatch();
+
+
+
+    const statuses = useSelector((state: RootState) => state.status.statuses);
+
 
     useEffect(() => {
         const token = Cookies.get("access_token");
@@ -75,28 +94,40 @@ export default function FriendsPage() {
         }
     }, []);
 
-    const { data: invoices = [], isLoading, error } = useFriends();
+    // use hooks
+    const { data: invoices = [], isLoading: isLoadingInvoices, error: isErrorInvoices } = useFriends({
+        enabled: !!userId,
+        staleTime: 5 * 60 * 1000,
+    });
     const { mutate: addFriend, isPending: isAddingFriend, error: addFriendError } = useAddFriend();
-    const { data: pendingRequests = [], isLoading: isLoadingRequests, error: requestsError } = usePendingFriendRequests();
+    const { data: pendingRequests = [], isLoading: isLoadingRequests, error: requestsError } = usePendingFriendRequests({
+        enabled: !!userId,
+    });
     const { mutate: acceptRequest } = useAcceptFriendRequest();
+    const { mutate: rejectRequest } = useRejectFriendRequest();
+    const { data: fetchFriendRequest = [], isLoading: isFetchingRequests, error: fetchSendRequestsError } = useFetchFriendRequests();
     useNotificationSocket(userId || "");
+
 
     useEffect(() => {
         setReceivedRequests(pendingRequests);
         setPendingCount(pendingRequests.length);
     }, [pendingRequests]);
 
-    const filteredUsers = invoices.filter((invoice) => {
-        const matchesTab =
-            activeTab === "online"
-                ? invoice.status === "online"
-                : activeTab === "idle"
-                    ? invoice.status === "idle"
-                    : activeTab === "all"
-                        ? true
+    const filteredUsers = useMemo(() => {
+        return invoices.map((invoice) => ({
+            ...invoice,
+            status: statuses[invoice.id] || invoice.status || "offline", // Default to "offline" if no status
+        })).filter((invoice) => {
+            const matchesTab =
+                activeTab === "online"
+                    ? invoice.status === "online"
+                    : activeTab === "idle"
+                        ? invoice.status === "idle"
                         : true;
-        return matchesTab && invoice.username.toLowerCase().includes(searchQuery.toLowerCase());
-    });
+            return matchesTab && invoice.username.toLowerCase().includes(searchQuery.toLowerCase());
+        });
+    }, [invoices, statuses, searchQuery, activeTab]);
 
     const handleSearchResult = (e: any) => {
         setSearchQuery(e.target.value);
@@ -122,12 +153,14 @@ export default function FriendsPage() {
         );
     };
 
+
+
     const headerText =
         activeTab === "online"
             ? `Online - ${filteredUsers.length}`
             : activeTab === "all"
                 ? `All Friends - ${filteredUsers.length}`
-                : `Sent - ${filteredUsers.length}`;
+                : `Sent - ${fetchFriendRequest.length}`;
 
     return (
         <>
@@ -266,7 +299,7 @@ export default function FriendsPage() {
                                                                             <Check color="#EDEDED" size={18} onClick={() => acceptRequest(request.id)} />
                                                                         </div>
                                                                         <div className="group-hover:bg-[#313338] p-2 rounded-full">
-                                                                            <X fill="#EDEDED" color="#EDEDED" size={18} />
+                                                                            <X fill="#EDEDED" color="#EDEDED" size={18} onClick={() => rejectRequest(request.id)} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -293,42 +326,78 @@ export default function FriendsPage() {
                                 </TableHeader>
 
                                 <TableBody>
-                                    {filteredUsers.length <= 0 ? (
-                                        <TableRow className="!border-zinc-700/9">
-                                            <TableCell className="font-medium !py-4 px-3 text-gray-400 text-center">
-                                                {activeTab === "online"
-                                                    ? "No online friends right now."
-                                                    : activeTab === "all"
-                                                        ? "Friends not found :(."
-                                                        : "No pending friend requests."}
-                                            </TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        filteredUsers.map((invoice) => (
-                                            <TableRow key={invoice.id} className="!border-zinc-700/90 cursor-pointer group hover:bg-zinc-800/90 hover:!border-zinc-700/90">
-                                                <TableCell className="font-medium !py-4 px-3 flex flex-col">
-                                                    <div className="flex gap-2 relative items-center justify-between">
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="relative bg-[#6866D4] w-[40px] h-[40px] rounded-full flex items-center justify-center">
-                                                                <h4 className="font-bold">{invoice.username.charAt(0)}</h4>
-                                                                <StatusIndicator status={invoice.status as StatusType} size="lg" className="absolute bottom-0 right-0" />
-                                                            </div>
-                                                            <h4>{invoice.username}</h4>
-                                                            <span className="absolute left-12 top-7 text-[12px]">{activeTab === "pending" ? invoice.username : invoice.status}</span>
-                                                        </div>
-                                                        <div className="flex gap-2">
-                                                            <div className="group-hover:bg-[#313338] p-2 rounded-full group">
-                                                                <MessageCircle fill="#EDEDED" color="#EDEDED" size={18} />
-                                                            </div>
-                                                            <div className="group-hover:bg-[#313338] p-2 rounded-full">
-                                                                <EllipsisVertical fill="#EDEDED" color="#EDEDED" size={18} />
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                    {activeTab === "pending"
+                                        ? (fetchFriendRequest.length <= 0 ? (
+                                            <TableRow className="!border-zinc-700/9">
+                                                <TableCell className="font-medium !py-4 px-3 text-gray-400 text-center">
+                                                    No pending requests found.
                                                 </TableCell>
                                             </TableRow>
+                                        ) : (
+                                            fetchFriendRequest.map((request) => (
+                                                <TableRow key={request.id} className="!border-zinc-700/90 cursor-pointer group hover:bg-zinc-800/90 hover:!border-zinc-700/90">
+                                                    <TableCell className="font-medium !py-4 px-3 flex flex-col">
+                                                        <div className="flex gap-2 relative items-center justify-between">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="relative bg-[#6866D4] w-[40px] h-[40px] rounded-full flex items-center justify-center">
+                                                                    <h4 className="font-bold">{request.receiverUsername.charAt(0)}</h4>
+                                                                </div>
+                                                                <h4>{request.receiverDisplayName}</h4>
+                                                                <span className="absolute left-12 top-7 text-[12px]">{request.receiverUsername}</span>
+                                                            </div>
+                                                            <div>
+                                                                <p className="!text-[11px] text-gray-400">{new Date(request.createdAt).toLocaleString()}</p>
+                                                            </div>
+
+                                                            <div className="flex gap-2">
+                                                                <div className="group-hover:bg-[#313338] p-2 rounded-full">
+                                                                    <X fill="#EDEDED" color="#EDEDED" size={18} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
                                         ))
-                                    )}
+                                        : (filteredUsers.length <= 0 ? (
+                                            <TableRow className="!border-zinc-700/9">
+                                                <TableCell className="font-medium !py-4 px-3 text-gray-400 text-center">
+                                                    {activeTab === "online"
+                                                        ? "No online friends right now."
+                                                        : "Friends not found :(."}
+                                                </TableCell>
+                                            </TableRow>
+                                        ) : (
+                                            filteredUsers.map((invoice) => (
+                                                <TableRow key={invoice.id} className="!border-zinc-700/90 cursor-pointer group hover:bg-zinc-800/90 hover:!border-zinc-700/90">
+                                                    <TableCell className="font-medium !py-4 px-3 flex flex-col">
+                                                        <div className="flex gap-2 relative items-center justify-between">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="relative bg-[#6866D4] w-[40px] h-[40px] rounded-full flex items-center justify-center">
+                                                                    <h4 className="font-bold">{invoice.username.charAt(0)}</h4>
+                                                                    <StatusIndicator status={statuses[invoice.id] || invoice.status} size="lg" className="absolute bottom-0 right-0" />
+
+
+                                                                </div>
+                                                                {invoice.status === "offline" && (
+                                                                    <span className="absolute text-[10px] text-gray-400 left-[20%]">{new Date(invoice.lastActive).toLocaleTimeString()}</span>
+                                                                )}
+                                                                <h4>{invoice.username}</h4>
+                                                                <span className="absolute left-12 top-7 text-[12px]">{invoice.status}</span>
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <div className="group-hover:bg-[#313338] p-2 rounded-full group">
+                                                                    <MessageCircle fill="#EDEDED" color="#EDEDED" size={18} />
+                                                                </div>
+                                                                <div className="group-hover:bg-[#313338] p-2 rounded-full">
+                                                                    <EllipsisVertical fill="#EDEDED" color="#EDEDED" size={18} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))
+                                        ))}
                                 </TableBody>
                             </Table>
                         </div>

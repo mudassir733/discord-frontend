@@ -45,3 +45,24 @@ export const sentFriendRequest = async (receiverUsername: string) => {
     return response.json();
 
 }
+
+export const fetchSendFriendRequests = async () => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error('Token not found!');
+    }
+    const response = await fetch(`${API_BASE_URL}/api/friend-requests/sent`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    })
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log("Fetch, Requests", data)
+    return data;
+
+}

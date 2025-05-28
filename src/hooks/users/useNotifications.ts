@@ -4,6 +4,9 @@ import { io } from "socket.io-client";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { API_BASE_URL } from "@/lib/api";
+import { useDispatch } from "react-redux";
+import { updateUserStatus } from "@/store/slices/statusTypeSlice";
+import { StatusType } from "@/components/status-indicator";
 
 interface NotificationPayload {
     id: string;
@@ -15,7 +18,11 @@ interface NotificationPayload {
 
 
 export const useNotificationSocket = (userId: string) => {
+    const dispatch = useDispatch();
+
     useEffect(() => {
+        let lastActivity = 0;
+        const debounceDelay = 10000;
         const token = Cookies.get("access_token");
         if (!token) {
             console.warn("No access token found for socket connection");
@@ -53,8 +60,33 @@ export const useNotificationSocket = (userId: string) => {
                         onClick: () => console.log("Navigate to notifications or friend requests"),
                     },
                 });
+            } else if (data.type === "friend_request_accepted") {
+                toast.info(`${data.message.split(" has ")[0]} accepted your friend request!`, {
+                    description: data.message,
+                });
+            } else if (data.type === "friend_request_rejected") {
+                toast.info(`${data.message.split(" has ")[0]} rejected your friend request!`, {
+                    description: data.message,
+                });
             }
         });
+        // Listen for status updates from the backend
+        function emitUserActivity() {
+            const now = Date.now();
+            if (now - lastActivity > debounceDelay) {
+                socket.emit('user_activity');
+                lastActivity = now;
+            }
+        }
+
+        // document.addEventListener('mousemove', emitUserActivity);
+        document.addEventListener('keypress', emitUserActivity);
+
+        socket.on("status-update", (data: { userId: string; status: StatusType }) => {
+            console.log("Status update received:", data);
+            dispatch(updateUserStatus(data));
+        });
+
 
 
         socket.on("connect_error", (error) => {

@@ -13,17 +13,20 @@ interface FriendResponse {
     lastActive: string;
 }
 
-export const useFriends = () => {
+export const useFriends = (options: { enabled: boolean; staleTime: number }) => {
     return useQuery<FriendResponse[], Error>({
         queryKey: ['friends'],
         queryFn: fetchFriends,
-        staleTime: 5 * 60 * 1000,
-        retry: (failureCount, error) => {
-            if (error.message.includes('401')) {
-                return false;
-            }
-            return failureCount < 3;
-        }
+        enabled: options.enabled,
+        staleTime: options.staleTime,
+        retry: 1
+
+        // retry: (failureCount, error) => {
+        //     if (error.message.includes('401')) {
+        //         return false;
+        //     }
+        //     return failureCount < 3;
+        // }
     });
 
 }

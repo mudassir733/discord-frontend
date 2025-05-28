@@ -34,7 +34,10 @@ export function FriendsSidebar() {
     const params = useParams();
     const { id } = params as { id?: string };
 
-    const { data: data = [], isLoading, error } = useFriends();
+    const { data: data = [], isLoading, error } = useFriends({
+        enabled: !!id,
+        staleTime: 5 * 60 * 1000,
+    });
 
 
     const handleFriendClick = (friendId: string) => {

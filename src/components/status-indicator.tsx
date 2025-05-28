@@ -30,7 +30,7 @@ export default function StatusIndicator({
     };
 
     const statusClasses = {
-        Online: "bg-[#3ba55d]", // Discord green
+        online: "bg-[#3ba55d]", // Discord green
         Idle: "bg-[#faa81a]", // Discord yellow/orange
         dnd: "bg-[#ed4245]", // Discord red
         offline: "bg-[#747f8d]", // Discord gray
@@ -60,7 +60,7 @@ export default function StatusIndicator({
     return (
         <div
             className={cn(
-                "rounded-full border-[#313338] border-2",
+                "rounded-full border-[#313338]  border-2",
                 sizeClasses[size],
                 statusClasses[status as keyof typeof statusClasses],
                 pulsingAnimation && status === "online" && "animate-pulse",

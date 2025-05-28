@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 import "./globals.css";
 import { Toaster } from "sonner";
 
@@ -26,7 +28,9 @@ export default function RootLayout({
 
     <QueryClientProvider client={queryClient}>
       <Toaster />
-      {children}
+      <Provider store={store}>
+        {children}
+      </Provider>
 
     </QueryClientProvider>
 

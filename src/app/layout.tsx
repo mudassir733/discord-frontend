@@ -3,6 +3,8 @@ import React from 'react'
 import { Metadata } from 'next'
 import { Noto_Sans } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 import { Toaster } from "@/components/ui/sonner";
 import "../app/[locale]/globals.css";
 import { usePathname } from 'next/navigation';
@@ -31,7 +33,10 @@ export default function layout({
             <body className={`${notoSans.variable}  antialiased ${pathname === "/en" ? "overflow-y-auto" : "overflow-y-hidden"}`} >
                 <QueryClientProvider client={queryClient}>
                     <Toaster />
-                    {children}
+                    <Provider store={store}>
+
+                        {children}
+                    </Provider>
                 </QueryClientProvider>
             </body>
         </html>

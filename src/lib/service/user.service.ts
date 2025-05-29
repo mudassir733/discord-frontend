@@ -170,3 +170,28 @@ export const fetchUserById = async (userId: string): Promise<UserResponse> => {
     return data;
 
 }
+
+export const fetchNotifications = async () => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error('Token not found!');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+
+    })
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+
+    }
+
+    const data = await response.json();
+    console.log("Fetch, Notifications", data)
+    return data;
+}

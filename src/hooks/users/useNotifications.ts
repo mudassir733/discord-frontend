@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { updateUserStatus } from "@/store/slices/statusTypeSlice";
 import { StatusType } from "@/components/status-indicator";
 import { NotificationPayload } from "@/lib/types";
+import { addNotification } from "@/store/slices/notificationSlice";
 
 
 
@@ -46,6 +47,7 @@ export const useNotificationSocket = (userId: string) => {
         // Listen for friend request notifications
         socket.on("notification", (data: NotificationPayload) => {
             console.log("NOTIFICATION", data)
+            dispatch(addNotification(data));
             if (data.type === "friend_request_sent") {
                 toast.info(`${data.message.split(" has ")[0]} has sent you a friend request!`, {
                     description: data.message,

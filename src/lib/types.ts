@@ -18,6 +18,16 @@ export interface FriendResponse {
     status: string;
     lastActive: string;
 }
+
+export interface FetchFriendRequest {
+    id: string;
+    receiverId: string;
+    receiverUsername: string;
+    receiverDisplayName: string;
+    profilePicture: string;
+    status: string;
+    createdAt: string;
+}
 export interface JwtPayload {
     id: string;
     [key: string]: any;

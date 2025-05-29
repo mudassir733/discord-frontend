@@ -8,6 +8,8 @@ import { store } from "@/store/store";
 import { Toaster } from "@/components/ui/sonner";
 import "../app/[locale]/globals.css";
 import { usePathname } from 'next/navigation';
+import SubHeader from '@/components/subHeader';
+
 
 
 const notoSans = Noto_Sans({
@@ -30,11 +32,11 @@ export default function layout({
     console.log(pathname)
     return (
         <html lang="en">
-            <body className={`${notoSans.variable}  antialiased ${pathname === "/en" ? "overflow-y-auto" : "overflow-y-hidden"}`} >
+            <body className={`${notoSans.variable}  antialiased ${pathname === "/en" ? "overflow-y-auto" : "overflow-y-auto custom-scrollbar"}`} >
                 <QueryClientProvider client={queryClient}>
                     <Toaster />
                     <Provider store={store}>
-
+                        <SubHeader />
                         {children}
                     </Provider>
                 </QueryClientProvider>

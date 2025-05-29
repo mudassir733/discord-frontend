@@ -1,21 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { sentFriendRequest } from "@/lib/service/user.service";
 import { AxiosError } from "axios";
+import { FriendRequestResponse, AddFriendVariable, ApiError } from "@/lib/types";
 
-interface FriendRequestResponse {
-    id: string;
-    senderId: string;
-    receiverId: string;
-    status: 'pending';
-    createdAt: string;
-}
 
-interface AddFriendVariable {
-    receiverUsername: string;
-}
-interface ApiError {
-    error: string
-}
+
 
 export const useAddFriend = () => {
     return useMutation<FriendRequestResponse, AxiosError<ApiError>, AddFriendVariable>({

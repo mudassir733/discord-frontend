@@ -1,5 +1,8 @@
 import Cookies from "js-cookie";
 import { API_BASE_URL } from "../api";
+import { jwtDecode } from "jwt-decode";
+import { AcceptResponse, FriendRequest, JwtPayload, UserResponse } from "../types";
+
 
 
 export const fetchFriends = async () => {
@@ -46,6 +49,59 @@ export const sentFriendRequest = async (receiverUsername: string) => {
 
 }
 
+
+export const acceptFriendRequest = async (requestId: string): Promise<AcceptResponse> => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error("No token found in cookies");
+    }
+
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    const userId = decodedToken.id;
+
+    const response = await fetch(`${API_BASE_URL}/api/friend-requests/${requestId}/accept`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+};
+
+
+export const rejectFriendRequst = async (requestId: string): Promise<AcceptResponse> => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error("No token found in cookies");
+    }
+
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    const userId = decodedToken.id;
+
+    const response = await fetch(`${API_BASE_URL}/api/friend-request/${requestId}/reject`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+};
+
+
 export const fetchSendFriendRequests = async () => {
     const token = Cookies.get("access_token");
     if (!token) {
@@ -63,6 +119,54 @@ export const fetchSendFriendRequests = async () => {
     }
     const data = await response.json();
     console.log("Fetch, Requests", data)
+    return data;
+
+}
+
+export const fetchPendingFriendRequests = async (): Promise<FriendRequest[]> => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error("No token found in cookies");
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/friend-requests/incoming`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+};
+
+
+export const fetchUserById = async (userId: string): Promise<UserResponse> => {
+
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error('Token not found!');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/users/me/${userId}`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+
+    })
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+
+    }
+    const data = await response.json();
+    console.log("Fetch, USER", data)
     return data;
 
 }

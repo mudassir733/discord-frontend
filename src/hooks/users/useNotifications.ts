@@ -7,14 +7,8 @@ import { API_BASE_URL } from "@/lib/api";
 import { useDispatch } from "react-redux";
 import { updateUserStatus } from "@/store/slices/statusTypeSlice";
 import { StatusType } from "@/components/status-indicator";
+import { NotificationPayload } from "@/lib/types";
 
-interface NotificationPayload {
-    id: string;
-    type: string;
-    message: string;
-    createdAt: string;
-    read: boolean;
-}
 
 
 export const useNotificationSocket = (userId: string) => {

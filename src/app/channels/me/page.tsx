@@ -25,6 +25,7 @@ import { useRejectFriendRequest } from "@/hooks/users/useRejectFriendRequest";
 import { useFetchFriendRequests } from "@/hooks/users/useFetchFriendRequest"
 
 
+
 // assets
 import friendicn from "@/assets/images/friend.svg"
 import addFrnIcon from "@/assets/images/addFrnd.svg"
@@ -107,6 +108,7 @@ export default function FriendsPage() {
     const { mutate: rejectRequest } = useRejectFriendRequest();
     const { data: fetchFriendRequest = [], isLoading: isFetchingRequests, error: fetchSendRequestsError } = useFetchFriendRequests();
     useNotificationSocket(userId || "");
+
 
 
     useEffect(() => {

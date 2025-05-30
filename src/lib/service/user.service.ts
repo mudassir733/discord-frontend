@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { API_BASE_URL } from "../api";
 import { jwtDecode } from "jwt-decode";
-import { AcceptResponse, FriendRequest, JwtPayload, UserResponse } from "../types";
+import { AcceptResponse, FriendRequest, JwtPayload, UpdateReadStatusResponse, UserResponse } from "../types";
 
 
 
@@ -141,7 +141,9 @@ export const fetchPendingFriendRequests = async (): Promise<FriendRequest[]> => 
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return response.json();
+    const data = await response.json();
+    console.log("Fetch, In coming request", data)
+    return data;
 };
 
 
@@ -192,6 +194,28 @@ export const fetchNotifications = async () => {
     }
 
     const data = await response.json();
-    console.log("Fetch, Notifications", data)
+    // console.log("Fetch, Notifications", data)
+    return data;
+}
+
+export const updateReadStatus = async (notificationId: string): Promise<UpdateReadStatusResponse> => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error('Token not found!');
+    }
+    console.log("Updating read status for notification:", notificationId);
+    const response = await fetch(`${API_BASE_URL}/api/notifications/${notificationId}/read`, {
+        method: "PATCH",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json();
+    // console.log("update, Notifications", data)
     return data;
 }

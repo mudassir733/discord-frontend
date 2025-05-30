@@ -9,19 +9,20 @@ import { useSelector } from "react-redux"
 // store
 import { RootState } from "@/store/store"
 
+
+
 // hooks
 import { useFetchNotifications } from "@/hooks/users/useNotificationFetch"
+import { useUpdateReadStatus } from "@/hooks/users/updateReadStatus"
 
 type TabType = "for-you" | "unreads" | "mentions"
 
 interface Notification {
-    id: string
-    type: "friend-request" | "mention" | "message"
-    content: string
-    avatar: string
-    username: string
-    timestamp: string
-    read: boolean
+    id: string;
+    type: string;
+    message: string;
+    createdAt: string;
+    read: boolean;
 }
 
 interface InboxModalProps {
@@ -33,11 +34,23 @@ export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
     const [activeTab, setActiveTab] = useState<TabType>("for-you")
     const modalRef = useRef<HTMLDivElement>(null)
     const reduxNotifications = useSelector((state: RootState) => state.notifications.list);
-    const { data, isLoading, error } = useFetchNotifications()
+    const { data, refetch, isLoading, error } = useFetchNotifications()
+    const { mutate: markAsRead } = useUpdateReadStatus();
+
+    const notifications: Notification[] = data?.notifications ?? [];
 
 
-    const notifications = reduxNotifications.length > 0 ? reduxNotifications : data?.notifications ?? [];
-    console.log(notifications)
+    const handleUpdateMarkAsRead = (notificationsId: string) => {
+        markAsRead(notificationsId, {
+            onSuccess: () => {
+                refetch()
+            },
+            onError(error) {
+                console.log(error)
+            }
+        })
+    }
+
     // Close modal when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -120,11 +133,15 @@ export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
                 <div className="max-h-[180px] overflow-y-auto">
                     {activeTab === "for-you" && (
                         <div>
-                            {notifications.map((notification: any) => (
+                            {notifications.map((notification: Notification) => (
                                 <div key={notification.id} className={cn("flex items-center px-4 py-3 hover:bg-[#2b2d31] cursor-pointer ",
                                     notification.read === false ? "border-b-2 bg-[#2b2d31] border-[#5865f2]" : "border-b-0 border-none bg-[#232428]"
 
-                                )}>
+                                )} onClick={() => {
+                                    if (!notification.read) {
+                                        handleUpdateMarkAsRead(notification.id);
+                                    }
+                                }}>
                                     <div className="relative mr-3">
                                         {/* <Image
                                             src={notification.avatar || "/placeholder.svg"}

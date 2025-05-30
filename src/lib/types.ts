@@ -72,3 +72,27 @@ export interface NotificationPayload {
     createdAt: string;
     read: boolean;
 }
+
+export interface Notification {
+    id: string;
+    type: string;
+    message: string;
+    createdAt: string;
+    read: boolean;
+}
+
+export interface NotificationRes {
+    notifications: Notification[];
+}
+
+
+export interface UpdateReadStatusResponse {
+    id: string;
+    recipientId: string;
+    type: string;
+    message: string;
+    createdAt: string;
+    read: boolean;
+}
+
+

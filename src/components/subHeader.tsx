@@ -18,7 +18,7 @@ function SubHeader() {
     const reduxNotifications = useSelector((state: RootState) => state.notifications.list);
 
     const { data } = useFetchNotifications()
-    const notifications = reduxNotifications.length > 0 ? reduxNotifications : data?.notifications ?? [];
+    const notifications = data?.notifications ?? [];
     const hasUnread = notifications.some((notification: any) => !notification.read)
     return (
         <div className='bg-[#121214] flex items-center justify-between h-8'>

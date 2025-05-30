@@ -13,6 +13,9 @@ export const useAcceptFriendRequest = () => {
         mutationFn: acceptFriendRequest,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["pendingFriendRequests"] });
+            queryClient.invalidateQueries({ queryKey: ["friends"] });
+
+
         },
         onError: (error) => {
             console.error("Failed to accept friend request:", error.message);

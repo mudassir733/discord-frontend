@@ -46,7 +46,7 @@ export function FriendsSidebar() {
 
     return (
         <ResizableDiv initialWidth={280} minWidth={180} maxWidth={340}>
-            <div className="flex flex-col h-screen">
+            <div className="flex flex-col h-screen border-t-[1px] border-zinc-800/90">
                 {/* Search Bar */}
                 <div className="p-2 border-b-[1px] border-zinc-800/90">
                     <Input

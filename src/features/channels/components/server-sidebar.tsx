@@ -118,7 +118,7 @@ export default function ServerSidebar() {
     };
 
     return (
-        <div className="w-[72px] h-screen bg-[#121214] flex flex-col items-center pt-3 space-y-2 overflow-y-auto custom-scrollbar overflow-x-hidden border-r-[1px] border-zinc-800/90">
+        <div className="w-[72px] h-screen bg-[#121214] flex flex-col items-center pt-3 space-y-2 overflow-y-auto custom-scrollbar overflow-x-hidden border-r-[1px] border-t-[1px] border-zinc-800/90">
             <Link href="/channels/me" className="relative  ">
                 <div
                     className={cn(

@@ -9,11 +9,13 @@ import { updateUserStatus } from "@/store/slices/statusTypeSlice";
 import { StatusType } from "@/components/status-indicator";
 import { NotificationPayload } from "@/lib/types";
 import { addNotification } from "@/store/slices/notificationSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 
 export const useNotificationSocket = (userId: string) => {
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         let lastActivity = 0;
@@ -49,6 +51,8 @@ export const useNotificationSocket = (userId: string) => {
             console.log("NOTIFICATION", data)
             dispatch(addNotification(data));
             if (data.type === "friend_request_sent") {
+                queryClient.invalidateQueries({ queryKey: ["pendingFriendRequests"] });
+
                 toast.info(`${data.message.split(" has ")[0]} has sent you a friend request!`, {
                     description: data.message,
                     action: {
@@ -57,6 +61,7 @@ export const useNotificationSocket = (userId: string) => {
                     },
                 });
             } else if (data.type === "friend_request_accepted") {
+                queryClient.invalidateQueries({ queryKey: ["friends"] });
                 toast.info(`${data.message.split(" has ")[0]} accepted your friend request!`, {
                     description: data.message,
                 });
@@ -72,7 +77,10 @@ export const useNotificationSocket = (userId: string) => {
             if (now - lastActivity > debounceDelay) {
                 socket.emit('user_activity');
                 lastActivity = now;
+
             }
+
+
         }
 
         // document.addEventListener('mousemove', emitUserActivity);
@@ -81,6 +89,21 @@ export const useNotificationSocket = (userId: string) => {
         socket.on("status-update", (data: { userId: string; status: StatusType }) => {
             console.log("Status update received:", data);
             dispatch(updateUserStatus(data));
+
+            queryClient.setQueryData(["friends"], (oldData: any) => {
+                if (!oldData) return oldData;
+                console.log("oldData", oldData)
+
+                return {
+                    ...oldData,
+                    friends: oldData.friends.map((friend: any) =>
+                        friend.id === data.userId
+                            ? { ...friend, status: data.status }
+                            : friend
+                    )
+                };
+            });
+
         });
 
 

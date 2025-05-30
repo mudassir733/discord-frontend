@@ -74,7 +74,7 @@ export default function FriendsPage() {
     const [addFriendMessage, setAddFriendMessage] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
     const [pendingCount, setPendingCount] = useState(0);
-    const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);
+    // const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);
     const dispatch = useDispatch();
 
 
@@ -101,18 +101,20 @@ export default function FriendsPage() {
         staleTime: 5 * 60 * 1000,
     });
     const { mutate: addFriend, isPending: isAddingFriend, error: addFriendError } = useAddFriend();
-    const { data: pendingRequests = [], isLoading: isLoadingRequests, error: requestsError } = usePendingFriendRequests({
+    const { data: pendingRequests = [], refetch, isLoading: isLoadingRequests, error: requestsError } = usePendingFriendRequests({
         enabled: !!userId,
     });
+
+    console.log("USER ID", userId)
     const { mutate: acceptRequest } = useAcceptFriendRequest();
     const { mutate: rejectRequest } = useRejectFriendRequest();
     const { data: fetchFriendRequest = [], isLoading: isFetchingRequests, error: fetchSendRequestsError } = useFetchFriendRequests();
     useNotificationSocket(userId || "");
-
-
+    const receivedRequests = pendingRequests.filter((request) => request.status === "pending");
+    console.log("PENDING", receivedRequests)
 
     useEffect(() => {
-        setReceivedRequests(pendingRequests);
+        // setReceivedRequests(pendingRequests);
         setPendingCount(pendingRequests.length);
     }, [pendingRequests]);
 
@@ -141,6 +143,7 @@ export default function FriendsPage() {
             { receiverUsername: username },
             {
                 onSuccess: () => {
+                    refetch()
                     setAddFriendMessage(`Friend request sent to ${username}!`);
                     setUsername("");
                 },

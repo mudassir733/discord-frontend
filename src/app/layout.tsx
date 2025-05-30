@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "../app/[locale]/globals.css";
 import { usePathname } from 'next/navigation';
 import SubHeader from '@/components/subHeader';
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 
 const notoSans = Noto_Sans({
@@ -38,6 +38,7 @@ export default function layout({
                     <Provider store={store}>
                         <SubHeader />
                         {children}
+                        <ReactQueryDevtools initialIsOpen={false} />
                     </Provider>
                 </QueryClientProvider>
             </body>

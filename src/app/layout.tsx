@@ -36,7 +36,7 @@ export default function layout({
                 <QueryClientProvider client={queryClient}>
                     <Toaster />
                     <Provider store={store}>
-                        <SubHeader />
+                        {pathname.startsWith("/en") || pathname.startsWith("/en/login") || pathname.startsWith("/en/register") ? null : <SubHeader />}
                         {children}
                         <ReactQueryDevtools initialIsOpen={false} />
                     </Provider>

@@ -349,10 +349,13 @@ export default function FriendsPage() {
                                                                 </div>
                                                                 <h4>{request.receiverDisplayName}</h4>
                                                                 <span className="absolute left-12 top-7 text-[12px]">{request.receiverUsername}</span>
+
+
+                                                                <div className="flex items-center justify-center">
+                                                                    <p className="!text-[11px] text-gray-400">{new Date(request.createdAt).toLocaleTimeString()}</p>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <p className="!text-[11px] text-gray-400">{new Date(request.createdAt).toLocaleString()}</p>
-                                                            </div>
+
 
                                                             <div className="flex gap-2">
                                                                 <div className="group-hover:bg-[#313338] p-2 rounded-full">
@@ -360,6 +363,7 @@ export default function FriendsPage() {
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </TableCell>
                                                 </TableRow>
                                             ))
@@ -384,11 +388,15 @@ export default function FriendsPage() {
 
 
                                                                 </div>
-                                                                {invoice.status === "offline" && (
-                                                                    <span className="absolute text-[10px] text-gray-400 left-[20%]">{new Date(invoice.lastActive).toLocaleTimeString()}</span>
-                                                                )}
+
                                                                 <h4>{invoice.username}</h4>
                                                                 <span className="absolute left-12 top-7 text-[12px]">{invoice.status}</span>
+                                                            </div>
+
+                                                            <div className="w-full flex items-center justify-between">
+                                                                {invoice.status === "offline" && (
+                                                                    <p className=" text-[10px] text-gray-400 left-[20%]">{new Date(invoice.lastActive).toLocaleTimeString()}</p>
+                                                                )}
                                                             </div>
                                                             <div className="flex gap-2">
                                                                 <div className="group-hover:bg-[#313338] p-2 rounded-full group">

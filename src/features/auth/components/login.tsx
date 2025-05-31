@@ -44,7 +44,7 @@ const login = () => {
     const { mutate, error, isPending } = useLogin({
         onSuccess: (data) => {
             Cookies.set("access_token", data.access_token, { expires: 30 })
-            router.push("/channels/@me")
+            router.push("/channels/me")
             return data;
         },
         onError: (err) => {

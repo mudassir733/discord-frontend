@@ -219,3 +219,23 @@ export const updateReadStatus = async (notificationId: string): Promise<UpdateRe
     // console.log("update, Notifications", data)
     return data;
 }
+
+export const getSearchUserByUserName = async (query: string) => {
+    const token = Cookies.get("access_token");
+    if (!token) {
+        throw new Error('Token not found!');
+    }
+    const response = await fetch(`${API_BASE_URL}/api/users/search?query=${query}`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = response.json();
+    console.log("SEARCH", data)
+    return data;
+}

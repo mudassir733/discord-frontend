@@ -4,8 +4,9 @@ import Image from "next/image";
 import { MessageCircle, EllipsisVertical, Check, X } from 'lucide-react';
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { debounce } from "lodash";
 
 
 // store
@@ -23,6 +24,11 @@ import { usePendingFriendRequests } from "@/hooks/users/usePendingFriendRequest"
 import { useAcceptFriendRequest } from "@/hooks/users/useAcceptFriendRequest";
 import { useRejectFriendRequest } from "@/hooks/users/useRejectFriendRequest";
 import { useFetchFriendRequests } from "@/hooks/users/useFetchFriendRequest"
+
+
+// service
+import { getSearchUserByUserName } from "@/lib/service/user.service";
+
 
 
 
@@ -44,6 +50,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils";
+
 
 
 interface FriendRequest {
@@ -74,10 +81,21 @@ export default function FriendsPage() {
     const [addFriendMessage, setAddFriendMessage] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
     const [pendingCount, setPendingCount] = useState(0);
+    const [debounceValue, setDebouncedValue] = useState<string>("");
     // const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);
-    const dispatch = useDispatch();
 
-
+    const debouncedSearch = useMemo(() =>
+        debounce((value: string) => {
+            setDebouncedValue(value);
+        }, 400), []
+    );
+    // cleanup on unmount
+    useEffect(() => {
+        debouncedSearch(searchQuery);
+        return () => {
+            debouncedSearch.cancel();
+        };
+    }, [searchQuery, debouncedSearch]);
 
     const statuses = useSelector((state: RootState) => state.status.statuses);
 
@@ -105,13 +123,21 @@ export default function FriendsPage() {
         enabled: !!userId,
     });
 
-    console.log("USER ID", userId)
+
     const { mutate: acceptRequest } = useAcceptFriendRequest();
     const { mutate: rejectRequest } = useRejectFriendRequest();
     const { data: fetchFriendRequest = [], isLoading: isFetchingRequests, error: fetchSendRequestsError } = useFetchFriendRequests();
     useNotificationSocket(userId || "");
+    const { data: isSearchData, isLoading: isSearchLoading, error: isSearchError } = useQuery({
+        queryKey: ["searchUserByUserName", debounceValue],
+        queryFn: () => getSearchUserByUserName(debounceValue),
+        enabled: !!debounceValue,
+        retry: 1,
+
+    })
     const receivedRequests = pendingRequests.filter((request) => request.status === "pending");
-    console.log("PENDING", receivedRequests)
+
+
 
     useEffect(() => {
         // setReceivedRequests(pendingRequests);
@@ -133,8 +159,13 @@ export default function FriendsPage() {
         });
     }, [invoices, statuses, searchQuery, activeTab]);
 
+    // conditional rendering data
+    const filteredSearchUser = searchQuery ? isSearchData ?? [] : filteredUsers ?? []
+
+
     const handleSearchResult = (e: any) => {
         setSearchQuery(e.target.value);
+        debouncedSearch(e.target.value)
     };
 
     const handleAddFriend = () => {
@@ -162,9 +193,9 @@ export default function FriendsPage() {
 
     const headerText =
         activeTab === "online"
-            ? `Online - ${filteredUsers.length}`
+            ? `Online - ${filteredSearchUser.length}`
             : activeTab === "all"
-                ? `All Friends - ${filteredUsers.length}`
+                ? `All Friends - ${filteredSearchUser.length}`
                 : `Sent - ${fetchFriendRequest.length}`;
 
     return (
@@ -368,7 +399,7 @@ export default function FriendsPage() {
                                                 </TableRow>
                                             ))
                                         ))
-                                        : (filteredUsers.length <= 0 ? (
+                                        : (filteredSearchUser.length <= 0 ? (
                                             <TableRow className="!border-zinc-700/9">
                                                 <TableCell className="font-medium !py-4 px-3 text-gray-400 text-center">
                                                     {activeTab === "online"
@@ -377,7 +408,7 @@ export default function FriendsPage() {
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            filteredUsers.map((invoice) => (
+                                            filteredSearchUser.map((invoice: any) => (
                                                 <TableRow key={invoice.id} className="!border-zinc-700/90 cursor-pointer group hover:bg-zinc-800/90 hover:!border-zinc-700/90">
                                                     <TableCell className="font-medium !py-4 px-3 flex flex-col">
                                                         <div className="flex gap-2 relative items-center justify-between">

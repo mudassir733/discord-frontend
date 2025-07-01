@@ -21,7 +21,6 @@ export const fetchFriends = async () => {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log("DATA, FRIENDS", data)
     return data;
 
 }
@@ -118,7 +117,6 @@ export const fetchSendFriendRequests = async () => {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    console.log("Fetch, Requests", data)
     return data;
 
 }
@@ -142,7 +140,6 @@ export const fetchPendingFriendRequests = async (): Promise<FriendRequest[]> => 
     }
 
     const data = await response.json();
-    console.log("Fetch, In coming request", data)
     return data;
 };
 
@@ -168,7 +165,6 @@ export const fetchUserById = async (userId: string): Promise<UserResponse> => {
 
     }
     const data = await response.json();
-    console.log("Fetch, USER", data)
     return data;
 
 }
@@ -236,6 +232,5 @@ export const getSearchUserByUserName = async (query: string) => {
         throw new Error(`HTTP error! status: ${response.status}`)
     }
     const data = response.json();
-    console.log("SEARCH", data)
     return data;
 }

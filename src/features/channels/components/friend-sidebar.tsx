@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 
 // hooks
 import { useFriends } from "@/hooks/users/getFriends";
+import { useCreateDirectChannel } from "@/hooks/chat/useCreateDirectChannel";
+
 
 // ui components
 import { Input } from "@/components/ui/input";
@@ -20,6 +22,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import StatusIndicator, { StatusType } from "@/components/status-indicator";
 import ResizableDiv from "@/components/resizable-div";
+import { useState } from "react";
 
 export interface Friends {
     id: string;
@@ -34,15 +37,29 @@ export function FriendsSidebar() {
     const params = useParams();
     const { id } = params as { id?: string };
 
+
     const { data: data = [], isLoading, error } = useFriends({
         enabled: !!id,
         staleTime: 5 * 60 * 1000,
     });
+    const otherUserUsername = data.find((friend) => friend.id !== id)?.username;
+    const { mutate: createDirectChannel } = useCreateDirectChannel(otherUserUsername as string);
+
+
+
+    // Handle friend click
+    const handleCreateDirectChannel = () => {
+        createDirectChannel()
+    };
+
 
 
     const handleFriendClick = (friendId: string) => {
         router.push(`/channels/me/${friendId}`);
     };
+
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
 
     return (
         <ResizableDiv initialWidth={280} minWidth={180} maxWidth={340}>
@@ -94,7 +111,10 @@ export function FriendsSidebar() {
                                         "flex items-center gap-2 transition-all duration-200 rounded-md p-1 text-sm hover:bg-zinc-800/90 cursor-pointer",
                                         friend.id === id ? "bg-zinc-800/90" : "hover:bg-zinc-800/90"
                                     )}
-                                    onClick={() => handleFriendClick(friend.id)}
+                                    onClick={() => {
+                                        handleFriendClick(friend.id);
+                                        handleCreateDirectChannel()
+                                    }}
                                 >
                                     <div className="relative">
                                         <Avatar className="bg-[#6765D3]">

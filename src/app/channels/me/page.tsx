@@ -128,7 +128,7 @@ export default function FriendsPage() {
     const { mutate: rejectRequest } = useRejectFriendRequest();
     const { data: fetchFriendRequest = [], isLoading: isFetchingRequests, error: fetchSendRequestsError } = useFetchFriendRequests();
     useNotificationSocket(userId || "");
-    const { data: isSearchData, isLoading: isSearchLoading, error: isSearchError } = useQuery({
+    const { data: isSearchData = [], isLoading: isSearchLoading, error: isSearchError } = useQuery({
         queryKey: ["searchUserByUserName", debounceValue],
         queryFn: () => getSearchUserByUserName(debounceValue),
         enabled: !!debounceValue,

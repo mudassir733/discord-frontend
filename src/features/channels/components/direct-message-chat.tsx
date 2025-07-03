@@ -116,16 +116,32 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
 
                 {/* Right side - Icons and Search */}
                 <div className="flex items-center space-x-4">
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button
+                        type="button" 
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Message"
+                    >
                         <Phone size={20} />
                     </button>
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button 
+                        type="button"
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Video Call"
+                    >
                         <Video size={20} />
                     </button>
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button 
+                        type="button"
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Notifications"
+                    >
                         <Bell size={20} />
                     </button>
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button 
+                        type="button"
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Friends"
+                    >
                         <Users size={20} />
                     </button>
                     <div className="relative">
@@ -234,13 +250,25 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                             </div>
                             {showReactions === message.id && (
                                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-1 self-start mt-1">
-                                    <button className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]">
+                                    <button 
+                                        type="button"
+                                        className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]"
+                                        title="Add Reaction"
+                                    >
                                         <Heart size={16} />
                                     </button>
-                                    <button className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]">
+                                    <button
+                                        type="button" 
+                                        className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]"
+                                        title="Reply"
+                                    >
                                         <Smile size={16} />
                                     </button>
-                                    <button className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]">
+                                    <button 
+                                        type="button"
+                                        className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]"
+                                        title="More Options"
+                                    >
                                         <MoreHorizontal size={16} />
                                     </button>
                                 </div>
@@ -255,7 +283,11 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
             <div className="px-4 pb-6">
                 <form onSubmit={handleSendMessage} className="relative">
                     <div className="flex items-center bg-zinc-800/90 rounded-lg p-1">
-                        <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                        <button 
+                            type="button" 
+                            className="p-2 text-[#b5bac1] hover:text-white"
+                            title="Add Friend"
+                        >
                             <PlusCircle size={20} />
                         </button>
                         <div className="flex-1">
@@ -268,13 +300,25 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                             />
                         </div>
                         <div className="flex items-center space-x-1">
-                            <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                            <button 
+                                type="button" 
+                                className="p-2 text-[#b5bac1] hover:text-white"
+                                title="Add Reaction"
+                            >
                                 <Gift size={20} />
                             </button>
-                            <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                            <button
+                                type="button" 
+                                className="p-2 text-[#b5bac1] hover:text-white"
+                                title="Add Sticker"
+                            >
                                 <Sticker size={20} />
                             </button>
-                            <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                            <button 
+                                type="button" 
+                                className="p-2 text-[#b5bac1] hover:text-white"
+                                title="Add Emoji"
+                            >
                                 <Smile size={20} />
                             </button>
                         </div>

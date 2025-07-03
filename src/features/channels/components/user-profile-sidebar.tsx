@@ -35,10 +35,18 @@ export default function UserProfileSidebar({ selectedFriend }: UserProfileSideba
         >
             {/* Header with action buttons */}
             <div className="absolute right-4 top-4 flex space-x-2">
-                <button className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white">
+                <button 
+                    type="button"
+                    className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white"
+                    title="Add Friend"
+                >
                     <UserPlus size={18} />
                 </button>
-                <button className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white">
+                <button 
+                    type="button"
+                    className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white"
+                    title="More Options"
+                >
                     <MoreHorizontal size={18} />
                 </button>
             </div>

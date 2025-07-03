@@ -18,6 +18,8 @@ export function middleware(request: NextRequest) {
     // Redirect unauthenticated users
     if (!token && pathname === "/channels/me" || pathname === "/") {
         return NextResponse.redirect(new URL("/en/login", request.url));
+    } else if (!token && pathname === "/en/login" || pathname === "/en/register") {
+        return NextResponse.next();
     }
 
     // Redirect "/" to "/en" if logged in

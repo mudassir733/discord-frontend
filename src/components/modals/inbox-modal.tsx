@@ -83,7 +83,11 @@ export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
                         <h2 className="text-lg font-semibold text-white">Inbox</h2>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <button className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white">
+                        <button
+                            type="button" 
+                            className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white"
+                            title="Mark all as read"
+                            >
                             <Check size={18} />
                         </button>
                         <div className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1]">
@@ -185,7 +189,10 @@ export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
                                         </div>
                                         <div className="text-xs text-[#b5bac1]">{new Date(notification.createdAt).toLocaleTimeString()}</div>
                                     </div>
-                                    <button className="w-8 h-8 rounded-full hover:bg-[#36393f] flex items-center justify-center text-[#b5bac1] hover:text-white">
+                                    <button 
+                                        type="button"
+                                        title="More Options"
+                                        className="w-8 h-8 rounded-full hover:bg-[#36393f] flex items-center justify-center text-[#b5bac1] hover:text-white">
                                         <MoreHorizontal size={16} />
                                     </button>
                                 </div>

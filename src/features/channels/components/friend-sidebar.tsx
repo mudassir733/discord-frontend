@@ -24,6 +24,9 @@ import StatusIndicator, { StatusType } from "@/components/status-indicator";
 import ResizableDiv from "@/components/resizable-div";
 import { useState } from "react";
 
+// models components
+import CreateGroupChat from "@/components/modals/create-groupchat-models";
+
 export interface Friends {
     id: string;
     avatar: string;
@@ -31,10 +34,10 @@ export interface Friends {
     status: StatusType;
 }
 
-
 export function FriendsSidebar() {
     const router = useRouter();
     const params = useParams();
+    const [isInboxOpen, setIsInboxOpen] = useState(false);
     const { id } = params as { id?: string };
 
 
@@ -62,6 +65,7 @@ export function FriendsSidebar() {
     if (error) return <p>Error: {error.message}</p>;
 
     return (
+        <>
         <ResizableDiv initialWidth={280} minWidth={180} maxWidth={340}>
             <div className="flex flex-col h-screen border-t-[1px] border-zinc-800/90">
                 {/* Search Bar */}
@@ -101,7 +105,10 @@ export function FriendsSidebar() {
                     <div className="px-3 py-2">
                         <div className="flex items-center justify-between">
                             <h3 className="text-gray-400 text-xs font-semibold uppercase">Direct Messages</h3>
-                            <Plus size={18} className="text-gray-400 cursor-pointer" />
+                            <Plus size={18} className="text-gray-400 cursor-pointer" 
+                            fontVariant={"outline"}
+                                onClick={() => setIsInboxOpen(!isInboxOpen)}
+                            />
                         </div>
                         <div className="mt-2 space-y-1">
                             {data.map((friend) => (
@@ -131,7 +138,15 @@ export function FriendsSidebar() {
                         </div>
                     </div>
                 </Tabs>
+                <CreateGroupChat 
+                isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} 
+            // friends={data} 
+            // onFriendSelect={handleCreateDirectChannel}
+        />
             </div>
         </ResizableDiv>
+
+        
+        </>
     );
 }

@@ -16,15 +16,22 @@ import { useState } from "react";
 interface CreateGroupChatProps {
   isOpen: boolean;
   onClose: () => void;
+  friends: {
+    id: string;
+    username?: string;
+    displayName?: string; // Optional display name
+    avatar?: string; // Optional avatar URL
+    status?: string; // Optional status
+  }[];
 }
 
-const CreateGroupChat = ({ isOpen, onClose }: CreateGroupChatProps) => {
-    const [friends, setFriends] = useState([
-        { id: '1', name: 'Pedro Duarte', username: '@peduarte' },
-        { id: '2', name: 'Jane Doe', username: '@janedoe' },
-        { id: '3', name: 'John Smith', username: '@johnsmith' },
-        // Add more friends as needed
-    ]);
+const CreateGroupChat = ({ isOpen, onClose, friends }: CreateGroupChatProps) => {
+    // const [friends, setFriends] = useState([
+    //     { id: '1', name: 'Pedro Duarte', username: '@peduarte' },
+    //     { id: '2', name: 'Jane Doe', username: '@janedoe' },
+    //     { id: '3', name: 'John Smith', username: '@johnsmith' },
+    //     // Add more friends as needed
+    // ]);
     const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
 
     const handleFriendSelect = (friendId: string) => {
@@ -58,13 +65,13 @@ const CreateGroupChat = ({ isOpen, onClose }: CreateGroupChatProps) => {
                 <div key={friend.id} className="flex items-center justify-between p-2 bg-[#2b2d31] rounded-md">
                   <div className="flex items-center gap-2">
                     <img
-                      src={`https://ui-avatars.com/api/?name=${friend.name}&background=random`}
-                      alt={friend.name}
+                      src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
+                      alt={friend.username}
                       className="w-8 h-8 rounded-full"
                     />
                     <div>
-                      <p className="text-white text-sm">{friend.name}</p>
-                      <p className="text-gray-400 text-xs">{friend.username}</p>
+                      <p className="text-white text-sm">{friend.displayName}</p>
+                      <p className="text-gray-400 text-xs">{friend?.username}</p>
                     </div>
                   </div>
                   {/* // Checkbox to select friend */}

@@ -140,7 +140,7 @@ export function FriendsSidebar() {
                 </Tabs>
                 <CreateGroupChat 
                 isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} 
-            // friends={data} 
+            friends={data} 
             // onFriendSelect={handleCreateDirectChannel}
         />
             </div>

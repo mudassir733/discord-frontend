@@ -101,8 +101,8 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                 <div className="flex items-center">
                     <div className="relative mr-2">
 
-                        <Image
-                            src="/placeholder.svg?height=32&width=32"
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
                             alt="User Avatar"
                             width={24}
                             height={24}
@@ -163,16 +163,16 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                 {/* Start of conversation notice */}
                 <div className="flex flex-col items-center mb-6">
                     <div className="w-16 h-16 rounded-full bg-[#5865f2] mb-4 overflow-hidden flex items-center justify-center">
-                        {/* <Image
-                            src={friend.avatar || "/placeholder.svg?height=64&width=64"}
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
                             alt={friend.name}
                             width={64}
                             height={64}
                             className="w-full h-full object-cover"
-                        /> */}
+                        />
 
-                        <span className="text-2xl">{firstLetter}</span>
-                        <span className="text-2xl">{lastLetter}</span>
+                        {/* <span className="text-2xl">{firstLetter}</span> */}
+                        {/* <span className="text-2xl">{lastLetter}</span> */}
                     </div>
                     <h2 className="text-xl font-bold text-white mb-1">{friend.name}</h2>
                     <p className="text-[#b5bac1] text-sm mb-2">{friend.username}</p>
@@ -215,8 +215,8 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                                 className={cn("w-10 h-10 rounded-full flex-shrink-0 mr-4", !isFirstMessageFromSender && "opacity-0")}
                             >
                                 {isFirstMessageFromSender && (
-                                    <Image
-                                        src={message.sender === "friend" ? friend.avatar : "/placeholder.svg?height=40&width=40&text=MA"}
+                                    <img
+                                        src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
                                         alt={message.sender === "friend" ? friend.name : "You"}
                                         width={40}
                                         height={40}

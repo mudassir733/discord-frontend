@@ -56,8 +56,8 @@ export default function UserProfileSidebar({ selectedFriend }: UserProfileSideba
             <div className="px-4 pb-4 relative">
                 <div className="absolute -top-22 left-4">
                     <div className="relative">
-                        <Image
-                            src={selectedFriend.avatar || "/placeholder.svg?height=80&width=80"}
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${selectedFriend.username}&background=random`}
                             alt={selectedFriend.name}
                             width={80}
                             height={80}

@@ -78,11 +78,13 @@ export default function CustomizeServerModal({ onBack, onClose, onCreateServer }
                             </div>
                             <button
                                 type="button"
+                                title="Upload Server Icon"
                                 className="absolute cursor-pointer bottom-0 right-0 w-6 h-6 bg-[#5865f2] rounded-full flex items-center justify-center"
                             >
                                 <Plus size={16} className="text-white" />
                             </button>
                             <input
+                                title="Upload Server Icon"
                                 id="fileInput"
                                 type="file"
                                 accept="image/*"

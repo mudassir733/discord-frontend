@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ChevronRight, MoreHorizontal, UserPlus } from "lucide-react"
 import { cn } from "@/lib/utils"
+import FriendProfileModal from "@/components/modals/friend-profile-models"
 
 interface UserProfileSidebarProps {
     isOpen: boolean
@@ -21,16 +22,17 @@ interface UserProfileSidebarProps {
 }
 
 export default function UserProfileSidebar({ selectedFriend }: UserProfileSidebarProps) {
+    const [isOpen, setIsOpen] = useState(false)
     // Close sidebar when clicking outside
-
 
 
     if (!selectedFriend) return null
 
     return (
-        <div
+        <>
+        <div 
             className={cn(
-                "user-profile-sidebar fixed right-0 top-0 h-full w-[310px] bg-[#232428] z-50 transition-transform duration-300 shadow-lg",
+                "user-profile-sidebar fixed right-0 top-0 h-full w-[23%] bg-[#232428] z-50 transition-transform duration-300 shadow-lg",
             )}
         >
             {/* Header with action buttons */}
@@ -53,7 +55,7 @@ export default function UserProfileSidebar({ selectedFriend }: UserProfileSideba
 
             {/* Banner and Avatar */}
             <div className="h-24 bg-[#313338]"></div>
-            <div className="px-4 pb-4 relative">
+            <div className="px-4 pb-4 relative h-full">
                 <div className="absolute -top-22 left-4">
                     <div className="relative">
                         <img
@@ -105,10 +107,14 @@ export default function UserProfileSidebar({ selectedFriend }: UserProfileSideba
                 )}
 
                 {/* View Full Profile Button */}
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center">
-                    <button className="text-sm text-[#b5bac1] hover:text-white hover:underline">View Full Profile</button>
+                <div className="absolute bottom-36 left-0 right-0 border-t border-[#3f4147] p-3 cursor-pointer text-gray-400 hover:text-gray-200 duration-200 ease-in-out flex justify-center"
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    <button type="button" className="text-sm cursor-pointer">View Full Profile</button>
                 </div>
             </div>
         </div>
+        <FriendProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} selectedFriend={selectedFriend} />
+        </>
     )
 }

@@ -12,9 +12,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
-import { BiEditAlt } from "react-icons/bi";
-import { MdPeopleAlt } from "react-icons/md";
-import { TbColorPicker } from "react-icons/tb";
+import { UsersRound } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 
 interface CreateGroupChatProps {
   isOpen: boolean;
@@ -89,8 +88,8 @@ const CreateGroupChat = ({ isOpen, onClose, friends }: CreateGroupChatProps) => 
               <div>
                 <Label htmlFor="file" className="h-20 w-20 relative flex items-center justify-center cursor-pointer bg-[#2b2d31] rounded-full text-gray-600 hover:text-gray-300 transition-colors">
                   <div>
-                    <TbColorPicker size={32} className=" bg-[#2b2d31] border-[#1e1f22] p-0.5 border-4 rounded-full absolute top-0 right-0 " />
-                    <MdPeopleAlt size={30} className=""/>
+                    <Pencil size={32} className=" bg-[#2b2d31] border-[#1e1f22] p-0.5 border-4 rounded-full absolute top-0 right-0 " />
+                    <UsersRound size={30} className=""/>
                   </div>
                 </Label>
                 <input type="file" name="file" id="file" className="hidden" accept="image/*" title="group image" />

@@ -127,7 +127,7 @@ export const fetchPendingFriendRequests = async (): Promise<FriendRequest[]> => 
         throw new Error("No token found in cookies");
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/friend-requests/incoming`, {
+    const response = await fetch(`${API_BASE_URL}/api/incoming`, {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,

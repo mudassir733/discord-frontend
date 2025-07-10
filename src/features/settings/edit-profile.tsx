@@ -12,7 +12,6 @@ export default function EditProfileContent() {
     const [pronouns, setPronouns] = useState("")
 
     const handleSave = () => {
-        // Here you would typically save the changes to your backend
         console.log("Saving profile changes:", { displayName, about, pronouns })
         router.push("/settings/my-account")
     }

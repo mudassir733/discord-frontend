@@ -54,13 +54,7 @@ function UserProfile() {
                 />
                 {/* this fallback is not working and i think this is not a good method that's why i commented it and i find a better way to do it. */}
                 {/* <AvatarFallback>
-                    <img
-                            src={`https://ui-avatars.com/api/?name=${data?.username}&background=random`}
-                            alt={data?.displayName}
-                            width={80}
-                            height={80}
-                            className="w-25 h-25 rounded-full border-4 border-[#232428]"
-                        />
+                    {firstLetter}{lastLetter}
                         </AvatarFallback> */}
             </Avatar>
             <div className="flex-1">

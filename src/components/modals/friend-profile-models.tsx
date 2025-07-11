@@ -9,6 +9,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+
+import { AppWindowIcon, CodeIcon } from "lucide-react"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils";
@@ -34,18 +43,20 @@ interface FriendProfileModalProps {
 const FriendProfileModal = ({ isOpen, onClose, selectedFriend }: FriendProfileModalProps) => {
 
   if (!selectedFriend) return null;
+
+  const [activeTab, setActiveTab] = useState<"about" | "noFriends" | "servers">("about");
     
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <form>
         <DialogContent className={cn(
-                        " w-[800px] h-[90%] block p-0 rounded-xl bg-[#232428] z-50 transition-transform duration-300 shadow-lg",
+                        "sm:max-w-[560px] h-[90%] table gap-0 p-0 rounded-xl bg-[#232428] z-50 transition-transform duration-300 shadow-lg",
                     )}>
             <DialogHeader className="hidden">
                 <DialogTitle className="font-semibold text-white">Friend Profile</DialogTitle>
             </DialogHeader>
           {/* Header with action buttons */}
-            <div className="absolute z-50 right-4 top-4 flex space-x-2">
+            <div className="absolute z-50 right-3 top-4 flex space-x-2">
                 <button 
                     type="button"
                     className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white"
@@ -62,16 +73,16 @@ const FriendProfileModal = ({ isOpen, onClose, selectedFriend }: FriendProfileMo
                 </button>
             </div>
           {/* Banner and Avatar */}
-            <div className="h-34 bg-[#9c27b0] rounded-t-xl"></div>
+            <div className="h-45 bg-[#9c27b0] rounded-t-xl"></div>
             <div className="px-4 pb-4 relative h-full">
-                <div className="absolute top-[-109px] left-4">
+                <div className="absolute top-[-60px] left-4">
                     <div className="relative">
                         <img
                             src={`https://ui-avatars.com/api/?name=${selectedFriend.username}&background=random`}
                             alt={selectedFriend.name}
                             width={80}
                             height={80}
-                            className="w-25 h-25 rounded-full border-4 border-[#232428]"
+                            className="w-27 h-27 rounded-full border-6 border-[#232428]"
                         />
                         {selectedFriend.status && (
                             <div
@@ -86,22 +97,57 @@ const FriendProfileModal = ({ isOpen, onClose, selectedFriend }: FriendProfileMo
                             ></div>
                         )}
                     </div>
-                    <div className="absolute text-white flex items-center gap-1 text-sm left-[380px] top-[60px] bg-[#2b2d31] rounded-lg p-2">
-                      <MessageCircle className="" />
+                    <div className="absolute text-white flex items-center gap-1 text-xs left-[440px] top-[70px] bg-[#2f3135] rounded-lg px-3 py-2 hover:bg-[#40444b] cursor-pointer">
+                      <MessageCircle size={16} />
                       Message
                     </div>
                 </div>
 
                 {/* User Info */}
-                <div className="mt-14 mb-4">
+                <div className="mb-2 pt-13">
                     <div className="flex flex-col">
                         <h2 className="text-xl font-bold text-white">{selectedFriend.name}</h2>
-                        <div className="text-sm text-[#b5bac1]">
+                        <div className="text-sm text-[#f5f9ff]">
                             {selectedFriend.username} {selectedFriend.pronouns && `• ${selectedFriend.pronouns}`}
                         </div>
                     </div>
                 </div>
             </div>
+            {/* /////////////////////// */}
+                    <div className="flex max-w-full flex-col gap-6">
+      <Tabs defaultValue="about" value={activeTab} onValueChange={(value) => setActiveTab(value as "about" | "noFriends" | "servers")}>
+        <TabsList className="block w-full p-0 text-[#e7ebef] border-b rounded-b-none border-zinc-600">
+          <TabsTrigger value="about" className={`px-0 mx-3 cursor-pointer hover:border-b-2 rounded-none hover:border-b-[#e7ebef] ${activeTab === "about" ? "border-b-2 border-b-[#e7ebef]" : ""}`}>About Me</TabsTrigger>
+          <TabsTrigger value="noFriends" className={`px-0 mx-4 cursor-pointer hover:border-b-2 rounded-none hover:border-b-[#e7ebef] ${activeTab === "noFriends" ? "border-b-2 border-b-[#e7ebef]" : ""}`}>No Mutual Friends</TabsTrigger>
+          <TabsTrigger value="servers" className={`px-0 mx-4 cursor-pointer hover:border-b-2 rounded-none hover:border-b-[#e7ebef] ${activeTab === "servers" ? "border-b-2 border-b-[#e7ebef]" : ""}`}>Mutual Servers</TabsTrigger>
+        </TabsList>
+        <TabsContent value="about">
+            {/* Member Since */}
+                <div className=" p-3 mb-3">
+                    <h3 className="text-xs  font-medium text-white mb-1">Member Since</h3>
+                    <p className="text-sm text-[#dbdfe4]">{selectedFriend.memberSince || "Nov 6, 2024"}</p>
+                </div>
+                <div className=" p-3 mb-3">
+                    <h3 className="text-xs  font-medium text-white mb-1">Member Since</h3>
+                    <input type="text" title="Member Since" className="w-full text-sm text-[#dbdfe4] border border-[#232428] hover:border hover:border-zinc-600 rounded-xs pb-4 p-0.5 duration-300" placeholder="CLick to add a note" />
+                </div>
+        </TabsContent>
+        <TabsContent value="noFriends">
+            <div className="space-y-8 text-white flex items-center justify-center">
+                <h1 className="text-xl mt-3">NO FRIENDS IN COMMON</h1>
+            </div>
+        </TabsContent>
+        <TabsContent value="servers">
+            <div className="space-y-4 p-3 text-white">
+                <div>
+                    <h3 className="text-xs font-medium text-white mb-1">Mutual Servers</h3>
+                    <p className="text-sm text-[#dbdfe4]">{selectedFriend.mutualServers || 0} Mutual Servers</p>
+                </div>
+            </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+                    {/* //////////////////////// */}
         </DialogContent>
       </form>
     </Dialog>

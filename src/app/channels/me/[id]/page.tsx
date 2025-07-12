@@ -47,8 +47,6 @@ export default function ChatPage() {
 
 
 
-
-
     useEffect(() => {
         if (!friends || friends.length === 0) return;
 

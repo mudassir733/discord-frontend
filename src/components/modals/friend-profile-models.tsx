@@ -1,16 +1,11 @@
-import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+
 } from "@/components/ui/dialog"
 
-import { AppWindowIcon, CodeIcon } from "lucide-react"
 import {
   Tabs,
   TabsContent,
@@ -18,11 +13,9 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { ChevronRight, MoreHorizontal, UserPlus } from "lucide-react"
+import { MoreHorizontal, UserPlus } from "lucide-react"
 import { MessageCircle } from 'lucide-react';
 
 interface FriendProfileModalProps {
@@ -113,8 +106,8 @@ const FriendProfileModal = ({ isOpen, onClose, selectedFriend }: FriendProfileMo
                     </div>
                 </div>
             </div>
-            {/* /////////////////////// */}
-                    <div className="flex max-w-full flex-col gap-6">
+            {/* Tabs for different sections */}
+          <div className="flex max-w-full flex-col gap-6">
       <Tabs defaultValue="about" value={activeTab} onValueChange={(value) => setActiveTab(value as "about" | "noFriends" | "servers")}>
         <TabsList className="block w-full p-0 text-[#e7ebef] border-b rounded-b-none border-zinc-600">
           <TabsTrigger value="about" className={`px-0 mx-3 cursor-pointer hover:border-b-2 rounded-none hover:border-b-[#e7ebef] ${activeTab === "about" ? "border-b-2 border-b-[#e7ebef]" : ""}`}>About Me</TabsTrigger>
@@ -147,7 +140,6 @@ const FriendProfileModal = ({ isOpen, onClose, selectedFriend }: FriendProfileMo
         </TabsContent>
       </Tabs>
     </div>
-                    {/* //////////////////////// */}
         </DialogContent>
       </form>
     </Dialog>

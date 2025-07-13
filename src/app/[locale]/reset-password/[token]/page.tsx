@@ -10,7 +10,7 @@ import Image from "next/image";
 
 
 // assets
-import forgetPassword from "@/assets/images/forgetPass.jpg"
+import forgetPassword from "@/assets/images/forgetPass.jpg";
 
 // components
 import { useResetPasswordVerify } from "@/hooks/auth/useResetPasswordVerify";

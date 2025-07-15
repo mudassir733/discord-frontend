@@ -2,9 +2,18 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import DirectMessageChat from "@/features/channels/components/direct-message-chat";
-import { useFriends } from "@/hooks/users/getFriends";
 
+
+// components
+import DirectMessageChat from "@/features/channels/components/direct-message-chat";
+
+
+
+// hooks
+import { useFriends } from "@/hooks/users/getFriends";
+import { useFetchDirectChannel } from "@/hooks/chat/useFetchDirectChannel";
+import { useAuthUser } from "@/hooks/auth/useAuthUser";
+import { useSocketConnection } from "@/hooks/chat/useSocketConnection";
 
 // DirectMessageChat expected friend type
 interface DirectMessageChatFriend {
@@ -15,11 +24,28 @@ interface DirectMessageChatFriend {
     isOnline: boolean;
 }
 
+
 export default function ChatPage() {
     const params = useParams();
-    const { id } = params as { id: string };
-    const { data: friends = [], isLoading, error } = useFriends();
+    const { id } = params as { id?: string } || { id: null };
+    const { userId } = useAuthUser();
+
+
+    // local states
     const [selectedFriend, setSelectedFriend] = useState<DirectMessageChatFriend | null>(null);
+
+
+    // use hooks
+    const { data: friends = [], isLoading, error } = useFriends({
+        enabled: !!id,
+        staleTime: 1000 * 60 * 60,
+    });
+    const otherUserUsername = friends.find((friend) => friend.id !== id)?.username || null;
+    const { data: fetchDirectChannel } = useFetchDirectChannel(otherUserUsername || "");
+    const socket = useSocketConnection(userId || "");
+    console.log(fetchDirectChannel)
+
+
 
     useEffect(() => {
         if (!friends || friends.length === 0) return;
@@ -56,6 +82,7 @@ export default function ChatPage() {
     if (!selectedFriend) {
         return <div className="flex-1 flex items-center justify-center text-white">Friend not found</div>;
     }
+
 
     return (
         <div className="flex flex-col h-screen bg-[#1A1A1E] w-[70%]">

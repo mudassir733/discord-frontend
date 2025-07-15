@@ -50,10 +50,18 @@ export default function FriendsListItem({
             </div>
 
             <div className="flex space-x-2 text-[#b5bac1]">
-                <button className="w-9 h-9 rounded-full hover:bg-[#2e3035] flex items-center justify-center">
+                <button 
+                    type="button"
+                    className="w-9 h-9 rounded-full hover:bg-[#2e3035] flex items-center justify-center"
+                    title="Message"
+                >
                     <MessageCircle size={20} />
                 </button>
-                <button className="w-9 h-9 rounded-full hover:bg-[#2e3035] flex items-center justify-center">
+                <button 
+                    type="button"
+                    className="w-9 h-9 rounded-full hover:bg-[#2e3035] flex items-center justify-center"
+                    title="More Options"
+                >
                     <MoreVertical size={20} />
                 </button>
             </div>

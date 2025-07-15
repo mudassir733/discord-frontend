@@ -1,42 +1,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
-import { API_BASE_URL } from "@/lib/api";
+import { rejectFriendRequst } from "@/lib/service/user.service";
+import { AcceptResponse } from "@/lib/types";
 
-interface JwtPayload {
-    id: string;
-    [key: string]: any;
-}
 
-interface AcceptResponse {
-    message: string;
-}
-
-const rejectFriendRequst = async (requestId: string): Promise<AcceptResponse> => {
-    const token = Cookies.get("access_token");
-    if (!token) {
-        throw new Error("No token found in cookies");
-    }
-
-    const decodedToken = jwtDecode<JwtPayload>(token);
-    const userId = decodedToken.id;
-
-    const response = await fetch(`${API_BASE_URL}/api/friend-request/${requestId}/reject`, {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId }),
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
-};
 
 export const useRejectFriendRequest = () => {
     const queryClient = useQueryClient();

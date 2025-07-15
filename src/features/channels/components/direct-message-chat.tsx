@@ -101,8 +101,8 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                 <div className="flex items-center">
                     <div className="relative mr-2">
 
-                        <Image
-                            src="/placeholder.svg?height=32&width=32"
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
                             alt="User Avatar"
                             width={24}
                             height={24}
@@ -116,16 +116,32 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
 
                 {/* Right side - Icons and Search */}
                 <div className="flex items-center space-x-4">
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button
+                        type="button" 
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Message"
+                    >
                         <Phone size={20} />
                     </button>
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button 
+                        type="button"
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Video Call"
+                    >
                         <Video size={20} />
                     </button>
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button 
+                        type="button"
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Notifications"
+                    >
                         <Bell size={20} />
                     </button>
-                    <button className="text-[#b5bac1] hover:text-white">
+                    <button 
+                        type="button"
+                        className="text-[#b5bac1] hover:text-white"
+                        title="Friends"
+                    >
                         <Users size={20} />
                     </button>
                     <div className="relative">
@@ -147,16 +163,16 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                 {/* Start of conversation notice */}
                 <div className="flex flex-col items-center mb-6">
                     <div className="w-16 h-16 rounded-full bg-[#5865f2] mb-4 overflow-hidden flex items-center justify-center">
-                        {/* <Image
-                            src={friend.avatar || "/placeholder.svg?height=64&width=64"}
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
                             alt={friend.name}
                             width={64}
                             height={64}
                             className="w-full h-full object-cover"
-                        /> */}
+                        />
 
-                        <span className="text-2xl">{firstLetter}</span>
-                        <span className="text-2xl">{lastLetter}</span>
+                        {/* <span className="text-2xl">{firstLetter}</span> */}
+                        {/* <span className="text-2xl">{lastLetter}</span> */}
                     </div>
                     <h2 className="text-xl font-bold text-white mb-1">{friend.name}</h2>
                     <p className="text-[#b5bac1] text-sm mb-2">{friend.username}</p>
@@ -199,8 +215,8 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                                 className={cn("w-10 h-10 rounded-full flex-shrink-0 mr-4", !isFirstMessageFromSender && "opacity-0")}
                             >
                                 {isFirstMessageFromSender && (
-                                    <Image
-                                        src={message.sender === "friend" ? friend.avatar : "/placeholder.svg?height=40&width=40&text=MA"}
+                                    <img
+                                        src={`https://ui-avatars.com/api/?name=${friend.username}&background=random`}
                                         alt={message.sender === "friend" ? friend.name : "You"}
                                         width={40}
                                         height={40}
@@ -234,13 +250,25 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                             </div>
                             {showReactions === message.id && (
                                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-1 self-start mt-1">
-                                    <button className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]">
+                                    <button 
+                                        type="button"
+                                        className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]"
+                                        title="Add Reaction"
+                                    >
                                         <Heart size={16} />
                                     </button>
-                                    <button className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]">
+                                    <button
+                                        type="button" 
+                                        className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]"
+                                        title="Reply"
+                                    >
                                         <Smile size={16} />
                                     </button>
-                                    <button className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]">
+                                    <button 
+                                        type="button"
+                                        className="text-[#b5bac1] hover:text-white p-1 rounded hover:bg-[#36393f]"
+                                        title="More Options"
+                                    >
                                         <MoreHorizontal size={16} />
                                     </button>
                                 </div>
@@ -255,7 +283,11 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
             <div className="px-4 pb-6">
                 <form onSubmit={handleSendMessage} className="relative">
                     <div className="flex items-center bg-zinc-800/90 rounded-lg p-1">
-                        <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                        <button 
+                            type="button" 
+                            className="p-2 text-[#b5bac1] hover:text-white"
+                            title="Add Friend"
+                        >
                             <PlusCircle size={20} />
                         </button>
                         <div className="flex-1">
@@ -268,13 +300,25 @@ export default function DirectMessageChat({ friend }: DirectMessageChatProps) {
                             />
                         </div>
                         <div className="flex items-center space-x-1">
-                            <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                            <button 
+                                type="button" 
+                                className="p-2 text-[#b5bac1] hover:text-white"
+                                title="Add Reaction"
+                            >
                                 <Gift size={20} />
                             </button>
-                            <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                            <button
+                                type="button" 
+                                className="p-2 text-[#b5bac1] hover:text-white"
+                                title="Add Sticker"
+                            >
                                 <Sticker size={20} />
                             </button>
-                            <button type="button" className="p-2 text-[#b5bac1] hover:text-white">
+                            <button 
+                                type="button" 
+                                className="p-2 text-[#b5bac1] hover:text-white"
+                                title="Add Emoji"
+                            >
                                 <Smile size={20} />
                             </button>
                         </div>

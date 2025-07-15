@@ -37,7 +37,7 @@ export default function RegisterForm() {
     const { mutate, error, isPending } = useRegister({
         onSuccess: (data) => {
             Cookies.set("access_token", data.access_token, { expires: 30 });
-            router.push("/channels")
+            router.push("/en/login")
             return data;
         },
         onError: (err) => {

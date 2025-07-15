@@ -104,7 +104,11 @@ export default function FriendsListWithChat() {
                 {selectedFriend ? (
                     <div className="flex flex-col w-full h-full">
                         <div className="h-12 bg-[#1A1A1E] flex items-center px-4">
-                            <button onClick={handleBackToList} className="text-[#b5bac1] hover:text-white mr-4">
+                            <button 
+                                type="button"
+                                onClick={handleBackToList} className="text-[#b5bac1] hover:text-white mr-4"
+                                title="Back to Friends List"
+                            >
                                 <ArrowLeft size={20} />
                             </button>
                             <span className="font-medium">{selectedFriend.name}</span>

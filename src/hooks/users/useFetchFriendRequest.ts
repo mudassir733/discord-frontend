@@ -1,19 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchSendFriendRequests } from "@/lib/service/user.service";
+import { FetchFriendRequest } from "@/lib/types";
 
 
-interface FriendResponse {
-    id: string;
-    receiverId: string;
-    receiverUsername: string;
-    receiverDisplayName: string;
-    profilePicture: string;
-    status: string;
-    createdAt: string;
-}
 
 export const useFetchFriendRequests = () => {
-    return useQuery<FriendResponse[], Error>({
+    return useQuery<FetchFriendRequest[], Error>({
         queryKey: ['requests'],
         queryFn: fetchSendFriendRequests,
         staleTime: 5 * 60 * 1000,

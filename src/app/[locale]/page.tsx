@@ -6,7 +6,11 @@ import Footer from "@/components/footer";
 
 
 export default async function Home({ params }: { params: { locale: string } }) {
-  const safeLocale = params.locale === "en" || params.locale === "fr" ? params.locale : "en";
+  const safeLocale = await params.locale === "en" || await params.locale === "fr" ? params.locale : "en";
+
+  if (safeLocale !== "en" && safeLocale !== "fr") {
+    return null
+  }
   return (
     <>
       <div className="w-full h-screen bg-[#5865F2] relative">

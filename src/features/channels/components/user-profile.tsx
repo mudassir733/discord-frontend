@@ -36,8 +36,8 @@ function UserProfile() {
     const { data, isLoading, error } = useFetchUserById(userId)
 
 
-    const firstLetter = data?.displayName.split(" ")[0].charAt(0).toUpperCase()
-    const lastLetter = data?.displayName.split(" ")[1].charAt(0).toUpperCase()
+    // const firstLetter = data?.displayName.split(" ")[0].charAt(0).toUpperCase()
+    // const lastLetter = data?.displayName.split(" ")[1].charAt(0).toUpperCase()
 
     if (isLoading) return <p>Loading...</p>
     if (error) return <p>Error: {error.message}</p>
@@ -47,8 +47,15 @@ function UserProfile() {
 
         <div className="p-3 bg-[#232428] rounded-lg w-full flex items-center gap-2" >
             <Avatar className='bg-[#6765D3] rounded-full w-10 h-10 flex items-center justify-center'>
-                <AvatarImage src="/avatars/user.png" alt="User" />
-                <AvatarFallback>{firstLetter}{lastLetter}</AvatarFallback>
+                <AvatarImage src={`https://ui-avatars.com/api/?name=${data?.username}&background=random`} alt="User" 
+                    width={80}
+                    height={80}
+                    className="w-10 h-10 rounded-full border-[#232428] object-cover"
+                />
+                {/* this fallback is not working and i think this is not a good method that's why i commented it and i find a better way to do it. */}
+                {/* <AvatarFallback>
+                    {firstLetter}{lastLetter}
+                        </AvatarFallback> */}
             </Avatar>
             <div className="flex-1">
                 <p className="text-white text-sm font-semibold">{data?.displayName}</p>

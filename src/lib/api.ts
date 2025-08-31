@@ -1,5 +1,5 @@
 // base url
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://powerful-amii-mudassirali-e34a54e3.koyeb.app';
 
 // end points
 export const REGISTER_ENDPOINT = `${API_BASE_URL}/auth/register`;

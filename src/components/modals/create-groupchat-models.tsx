@@ -10,13 +10,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
-<<<<<<< HEAD
-
-=======
 import { UsersRound, X } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import StatusIndicator, { StatusType } from "@/components/status-indicator";
->>>>>>> e5be1ec41afcf95468c1a4b1745219db857c8199
 
 interface CreateGroupChatProps {
   isOpen: boolean;
@@ -31,23 +27,19 @@ interface CreateGroupChatProps {
 }
 
 const CreateGroupChat = ({ isOpen, onClose, friends }: CreateGroupChatProps) => {
-    const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
+  const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
 
-<<<<<<< HEAD
+  const handleFriendSelect = (friendId: string) => {
+    if (selectedFriends.includes(friendId)) {
+      setSelectedFriends(selectedFriends.filter((id) => id !== friendId));
+    } else {
+      setSelectedFriends([...selectedFriends, friendId]);
+    }
+  };
+  // Calculate the number of friends that can still be added
+  // Assuming the limit is 9 friends, you can adjust this as needed
+  const friendCount = -selectedFriends.length + 9;
 
-=======
-    const handleFriendSelect = (friendId: string) => {
-        if (selectedFriends.includes(friendId)) {
-            setSelectedFriends(selectedFriends.filter((id) => id !== friendId));
-        } else {
-            setSelectedFriends([...selectedFriends, friendId]);
-        }
-    };
-    // Calculate the number of friends that can still be added
-    // Assuming the limit is 9 friends, you can adjust this as needed
-    const friendCount = -selectedFriends.length + 9;
-    
->>>>>>> e5be1ec41afcf95468c1a4b1745219db857c8199
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <form>
@@ -59,28 +51,28 @@ const CreateGroupChat = ({ isOpen, onClose, friends }: CreateGroupChatProps) => 
             </DialogDescription>
             <div className="flex flex-wrap gap-1 items-center border border-zinc-700/90 rounded-md p-0.5 bg-[#202025] min-h-[38px]">
               {friends.filter(friend => selectedFriends.includes(friend.id)).map(friend => (
-            <div key={friend.id} className="flex items-center bg-[#2d2d33] cursor-pointer text-white px-2 py-1.5 text-sm rounded-md"
-                onClick={() => handleFriendSelect(friend.id)} // Toggle selection on click
-            >
-              <span>{friend.displayName}</span>
-              <button
-              type="button"
-              aria-label="Remove friend"
-              className="ml-2 text-gray-400 cursor-pointer" 
-              onClick={() => handleFriendSelect(friend.id)}
-            >
-                <X size={12} />
-            </button>
-          </div>
-            ))}
-            { selectedFriends.length < 1 && (
-              <input 
-              className="flex-1 bg-transparent text-sm pl-2 outline-none text-gray-200 placeholder:text-gray-500 placeholder:" 
-              placeholder="Type the username of a friend" 
-            />
-            )}
-            
-          </div>
+                <div key={friend.id} className="flex items-center bg-[#2d2d33] cursor-pointer text-white px-2 py-1.5 text-sm rounded-md"
+                  onClick={() => handleFriendSelect(friend.id)} // Toggle selection on click
+                >
+                  <span>{friend.displayName}</span>
+                  <button
+                    type="button"
+                    aria-label="Remove friend"
+                    className="ml-2 text-gray-400 cursor-pointer"
+                    onClick={() => handleFriendSelect(friend.id)}
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+              {selectedFriends.length < 1 && (
+                <input
+                  className="flex-1 bg-transparent text-sm pl-2 outline-none text-gray-200 placeholder:text-gray-500 placeholder:"
+                  placeholder="Type the username of a friend"
+                />
+              )}
+
+            </div>
           </DialogHeader>
           <div className="flex flex-col h-[396px] gap-4 pl-4 pt-3 pr-4">
             <div className="flex flex-col justify-start h-full overflow-y-auto custom-scrollbar">
@@ -109,37 +101,37 @@ const CreateGroupChat = ({ isOpen, onClose, friends }: CreateGroupChatProps) => 
                     type="checkbox"
                     checked={selectedFriends.includes(friend.id)}
                     onChange={() => handleFriendSelect(friend.id)}
-                    className="w-6 h-6 px-0 appearance-none bg-transparent border-gray-600 border rounded-md focus:outline-none focus:ring-0 checked:bg-[#4752c4] relative custom-checkbox" 
+                    className="w-6 h-6 px-0 appearance-none bg-transparent border-gray-600 border rounded-md focus:outline-none focus:ring-0 checked:bg-[#4752c4] relative custom-checkbox"
                   />
                 </div>
-            ))}
+              ))}
             </div>
           </div>
           <DialogFooter className="grid grid-cols-1 h-[178px]">
             <div className={`flex flex-col gap-4 justify-end ${selectedFriends.length < 2 ? "" : "border-t-[1px] border-zinc-700/90"}`}>
-            {selectedFriends.length > 1 && (
-              <div className="rounded-md gap-3 flex items-center justify-between pl-6 pr-6 pt-2">
-              <div>
-                <Label htmlFor="file" className="h-20 w-20 relative flex items-center justify-center cursor-pointer bg-[#2b2d31] rounded-full text-gray-600 hover:text-gray-300 transition-colors">
+              {selectedFriends.length > 1 && (
+                <div className="rounded-md gap-3 flex items-center justify-between pl-6 pr-6 pt-2">
                   <div>
-                    <Pencil size={32} className=" bg-[#2b2d31] border-[#242429] p-1 border-4 rounded-full absolute top-[-5] right-0 " />
-                    <UsersRound size={30} className=""/>
+                    <Label htmlFor="file" className="h-20 w-20 relative flex items-center justify-center cursor-pointer bg-[#2b2d31] rounded-full text-gray-600 hover:text-gray-300 transition-colors">
+                      <div>
+                        <Pencil size={32} className=" bg-[#2b2d31] border-[#242429] p-1 border-4 rounded-full absolute top-[-5] right-0 " />
+                        <UsersRound size={30} className="" />
+                      </div>
+                    </Label>
+                    <input type="file" name="file" id="file" className="hidden" accept="image/*" title="group image" />
                   </div>
-                </Label>
-                <input type="file" name="file" id="file" className="hidden" accept="image/*" title="group image" />
+                  <div className="flex-1 w-full">
+                    <p className="text-gray-400 text-xs">Group Name (optional)</p>
+                    <Input
+                      className="rounded-md border bg-[#1e1f1fbd] border-zinc-700/90 text-gray-300 mt-2 placeholder:text-gray-500"
+                      placeholder={`${selectedFriends.length < 1 ? "Group Name" : selectedFriends.map(id => friends.find(friend => friend.id === id)?.displayName || "Unknown").join(", ")}`}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className={`w-full pl-6 pr-6 pb-4 ${selectedFriends.length < 2 ? "pt-6 border-t-[1px] border-zinc-700/90" : ""}`}>
+                <Button className="flex items-center justify-center w-full h-11 cursor-pointer bg-[#5865f2] text-white hover:bg-[#4752c4]" type="submit">{selectedFriends.length > 1 ? "Create Group DM" : "Create DM"}</Button>
               </div>
-              <div className="flex-1 w-full">
-                <p className="text-gray-400 text-xs">Group Name (optional)</p>
-                <Input
-                  className="rounded-md border bg-[#1e1f1fbd] border-zinc-700/90 text-gray-300 mt-2 placeholder:text-gray-500"
-                  placeholder={`${selectedFriends.length < 1 ? "Group Name" : selectedFriends.map(id => friends.find(friend => friend.id === id)?.displayName || "Unknown").join(", ")}`}
-                />
-              </div>
-            </div>
-          )}
-            <div className={`w-full pl-6 pr-6 pb-4 ${selectedFriends.length < 2 ? "pt-6 border-t-[1px] border-zinc-700/90" : ""}`}>
-            <Button className="flex items-center justify-center w-full h-11 cursor-pointer bg-[#5865f2] text-white hover:bg-[#4752c4]" type="submit">{selectedFriends.length > 1 ? "Create Group DM" : "Create DM"}</Button>
-            </div>
             </div>
           </DialogFooter>
         </DialogContent>

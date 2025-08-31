@@ -12,7 +12,6 @@ import DirectMessageChat from "@/features/channels/components/direct-message-cha
 // hooks
 import { useFriends } from "@/hooks/users/getFriends";
 import { useFetchDirectChannel } from "@/hooks/chat/useFetchDirectChannel";
-import { useAuthUser } from "@/hooks/auth/useAuthUser";
 
 // DirectMessageChat expected friend type
 interface DirectMessageChatFriend {

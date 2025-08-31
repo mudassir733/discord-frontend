@@ -4,13 +4,15 @@ import HeroUI from "@/features/home/components/heroUI";
 import HomeUI from "@/features/home/components/homeUI"
 import Footer from "@/components/footer";
 
+interface PageParams {
+  locale: string;
+}
 
-export default async function Home({ params }: { params: { locale: string } }) {
-  const safeLocale = params.locale === "en" || params.locale === "fr" ? params.locale : "en";
+export default async function Home({ params }: { params: Promise<PageParams> }) {
+  const { locale } = await params;
 
-  if (safeLocale !== "en" && safeLocale !== "fr") {
-    return null
-  }
+  const safeLocale = locale === "en" || locale === "fr" ? locale : "en";
+
   return (
     <>
       <div className="w-full h-screen bg-[#5865F2] relative">

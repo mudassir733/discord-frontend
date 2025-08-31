@@ -5,13 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 // validation schema
-import { loginSchema, LoginFormData } from '@/lib/schemas'
+import { loginSchema, LoginFormData } from "@/lib/schemas";
 
 // hooks
-import useLogin, { LoginRequest } from '@/hooks/auth/useLogin';
+import useLogin, { LoginRequest } from "@/hooks/auth/useLogin";
 
 // assets
 import QrCodeImg from "@/assets/images/Qr.svg"
@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 
-const login = () => {
+const Login = () => {
     const router = useRouter()
 
     const form = useForm<LoginFormData>({
@@ -67,7 +67,7 @@ const login = () => {
                     <div className='md:flex-2 w-full'>
                         <div className='text-center pb-6'>
                             <h2 className='text-[25px] !text-white'>Welcom back!</h2>
-                            <p className='text-[#A3A6AA]'>We're so excited to see you again!</p>
+                            <p className='text-[#A3A6AA]'>We re so excited to see you again!</p>
                         </div>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -137,4 +137,4 @@ const login = () => {
 }
 
 
-export default login
+export default Login

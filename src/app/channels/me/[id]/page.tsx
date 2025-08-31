@@ -42,7 +42,6 @@ export default function ChatPage() {
     });
     const otherUserUsername = friends.find((friend) => friend.id !== id)?.username || null;
     const { data: fetchDirectChannel } = useFetchDirectChannel(otherUserUsername || "");
-    const socket = useSocketConnection(userId || "");
     console.log(fetchDirectChannel)
 
 

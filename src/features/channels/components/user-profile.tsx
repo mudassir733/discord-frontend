@@ -15,7 +15,7 @@ import { Headphones, Mic, Settings } from 'lucide-react'
 
 interface JwtPayload {
     id: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 function UserProfile() {

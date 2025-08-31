@@ -12,13 +12,13 @@ import { cn } from "@/lib/utils";
 
 // hooks
 import { useFriends } from "@/hooks/users/getFriends";
-import { useCreateDirectChannel } from "@/hooks/chat/useCreateDirectChannel";
+
 
 
 // ui components
 import { Input } from "@/components/ui/input";
 import { Tabs } from "@/components/ui/tabs";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import StatusIndicator, { StatusType } from "@/components/status-indicator";
 import ResizableDiv from "@/components/resizable-div";
@@ -46,14 +46,6 @@ export function FriendsSidebar() {
         staleTime: 5 * 60 * 1000,
     });
     const otherUserUsername = data.find((friend) => friend.id !== id)?.username;
-    const { mutate: createDirectChannel } = useCreateDirectChannel(otherUserUsername as string);
-
-
-
-    // Handle friend click
-    const handleCreateDirectChannel = () => {
-        createDirectChannel()
-    };
 
 
 
@@ -61,92 +53,89 @@ export function FriendsSidebar() {
         router.push(`/channels/me/${friendId}`);
     };
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
 
     return (
         <>
-        <ResizableDiv initialWidth={280} minWidth={180} maxWidth={340}>
-            <div className="flex flex-col h-screen border-t-[1px] border-zinc-800/90">
-                {/* Search Bar */}
-                <div className="p-2 border-b-[1px] border-zinc-800/90">
-                    <Input
-                        placeholder="Find or start a conversation"
-                        className="bg-[#1e1f22] text-white border-none rounded-md"
+            <ResizableDiv initialWidth={280} minWidth={180} maxWidth={340}>
+                <div className="flex flex-col h-screen border-t-[1px] border-zinc-800/90">
+                    {/* Search Bar */}
+                    <div className="p-2 border-b-[1px] border-zinc-800/90">
+                        <Input
+                            placeholder="Find or start a conversation"
+                            className="bg-[#1e1f22] text-white border-none rounded-md"
+                        />
+                    </div>
+                    <Tabs className="flex-1 mt-2">
+                        <TabsList className="px-3 flex flex-col items-start gap-1 border-b-[1px] border-zinc-800/90">
+                            <TabsTrigger
+                                onClick={() => router.push("/channels/me")}
+                                value="friends"
+                                className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
+                            >
+                                <Image src={friendIcon} alt="friend" />
+                                Friends
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="nitro"
+                                className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
+                            >
+                                <Image src={nitro} alt="nitro" />
+                                Nitro
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="shop"
+                                className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
+                            >
+                                <Image src={message} alt="message" />
+                                Shop
+                            </TabsTrigger>
+                        </TabsList>
+
+                        {/* Direct Messages */}
+                        <div className="px-3 py-2">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-gray-400 text-xs font-semibold uppercase">Direct Messages</h3>
+                                <Plus size={18} className="text-gray-400 cursor-pointer"
+                                    fontVariant={"outline"}
+                                    onClick={() => setIsInboxOpen(!isInboxOpen)}
+                                />
+                            </div>
+                            <div className="mt-2 space-y-1">
+                                {data.map((friend) => (
+                                    <div
+                                        key={friend.id}
+                                        className={cn(
+                                            "flex items-center gap-2 transition-all duration-200 rounded-md p-1 text-sm hover:bg-zinc-800/90 cursor-pointer",
+                                            friend.id === id ? "bg-zinc-800/90" : "hover:bg-zinc-800/90"
+                                        )}
+                                        onClick={() => {
+                                            handleFriendClick(friend.id);
+                                        }}
+                                    >
+                                        <div className="relative">
+                                            <Avatar className="bg-[#6765D3]">
+                                                {/* <AvatarImage src={friend.avatar} alt={friend.username} /> */}
+                                                <AvatarFallback>{friend.username.charAt(0)}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="absolute right-0 bottom-0">
+                                                <StatusIndicator status={friend.status as StatusType} size="md" />
+                                            </div>
+                                        </div>
+                                        <span className="text-gray-300">{friend.username}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </Tabs>
+                    <CreateGroupChat
+                        isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)}
+                        friends={data}
+                    // onFriendSelect={handleCreateDirectChannel}
                     />
                 </div>
-                <Tabs className="flex-1 mt-2">
-                    <TabsList className="px-3 flex flex-col items-start gap-1 border-b-[1px] border-zinc-800/90">
-                        <TabsTrigger
-                            onClick={() => router.push("/channels/me")}
-                            value="friends"
-                            className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
-                        >
-                            <Image src={friendIcon} alt="friend" />
-                            Friends
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="nitro"
-                            className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
-                        >
-                            <Image src={nitro} alt="nitro" />
-                            Nitro
-                        </TabsTrigger>
-                        <TabsTrigger
-                            value="shop"
-                            className="data-[state=active]:text-white text-gray-400 cursor-pointer hover:bg-zinc-800/90 w-full text-left py-2 px-2 transition-all duration-200 rounded-md data-[state=active]:bg-zinc-800/90 text-sm flex items-center gap-2"
-                        >
-                            <Image src={message} alt="message" />
-                            Shop
-                        </TabsTrigger>
-                    </TabsList>
+            </ResizableDiv>
 
-                    {/* Direct Messages */}
-                    <div className="px-3 py-2">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-gray-400 text-xs font-semibold uppercase">Direct Messages</h3>
-                            <Plus size={18} className="text-gray-400 cursor-pointer" 
-                            fontVariant={"outline"}
-                                onClick={() => setIsInboxOpen(!isInboxOpen)}
-                            />
-                        </div>
-                        <div className="mt-2 space-y-1">
-                            {data.map((friend) => (
-                                <div
-                                    key={friend.id}
-                                    className={cn(
-                                        "flex items-center gap-2 transition-all duration-200 rounded-md p-1 text-sm hover:bg-zinc-800/90 cursor-pointer",
-                                        friend.id === id ? "bg-zinc-800/90" : "hover:bg-zinc-800/90"
-                                    )}
-                                    onClick={() => {
-                                        handleFriendClick(friend.id);
-                                        handleCreateDirectChannel()
-                                    }}
-                                >
-                                    <div className="relative">
-                                        <Avatar className="bg-[#6765D3]">
-                                            {/* <AvatarImage src={friend.avatar} alt={friend.username} /> */}
-                                            <AvatarFallback>{friend.username.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="absolute right-0 bottom-0">
-                                            <StatusIndicator status={friend.status as StatusType} size="md" />
-                                        </div>
-                                    </div>
-                                    <span className="text-gray-300">{friend.username}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Tabs>
-                <CreateGroupChat 
-                isOpen={isInboxOpen} onClose={() => setIsInboxOpen(false)} 
-            friends={data} 
-            // onFriendSelect={handleCreateDirectChannel}
-        />
-            </div>
-        </ResizableDiv>
 
-        
         </>
     );
 }

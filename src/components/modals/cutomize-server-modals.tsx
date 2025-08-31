@@ -2,7 +2,7 @@
 import { useState } from "react"
 import type React from "react"
 
-import { X, Camera, Plus } from "lucide-react"
+import { Camera, Plus } from "lucide-react"
 import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,25 +16,19 @@ interface CustomizeServerModalProps {
 
 export default function CustomizeServerModal({ onBack, onClose, onCreateServer }: CustomizeServerModalProps) {
     const [serverName, setServerName] = useState("Mudassir Ali's server")
-    const [isUploading, setIsUploading] = useState(false)
-    const [selectedFile, setSelectedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
 
-    const handleFileChange = (event: any) => {
-        const file = event.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            setSelectedFile(file);
-            setPreviewUrl(null as any);
-            setIsUploading(false);
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] || null;
+
+        if (file && file.type.startsWith("image/")) {
+            setPreviewUrl(null);
         } else {
-            setSelectedFile(null);
-            setPreviewUrl(null as any);
-            alert('Please select a valid image file.');
+            setPreviewUrl(null);
+            alert("Please select a valid image file.");
         }
     };
-
     const handleUploadClick = () => {
-        setIsUploading(true);
         document.getElementById('fileInput')?.click();
 
     };

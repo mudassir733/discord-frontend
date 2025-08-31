@@ -13,11 +13,22 @@ import { useQueryClient } from "@tanstack/react-query";
 
 
 
+interface Friend {
+    id: string;
+    username: string;
+    status: string;
+}
+
+interface FriendsResponse {
+    friends: Friend[];
+}
+
 export const useNotificationSocket = (userId: string) => {
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
 
     useEffect(() => {
+        const notificationAudio = new Audio("/sounds/notificationAud.mp3");
         let lastActivity = 0;
         const debounceDelay = 10000;
         const token = Cookies.get("access_token");
@@ -48,7 +59,13 @@ export const useNotificationSocket = (userId: string) => {
 
         // Listen for friend request notifications
         socket.on("notification", (data: NotificationPayload) => {
-            console.log("NOTIFICATION", data)
+            console.log("NOTIFICATION", data);
+
+            // Play notification sound
+            notificationAudio.play().catch((error) => {
+                console.error("Error playing notification sound:", error);
+            });
+
             dispatch(addNotification(data));
             if (data.type === "friend_request_sent") {
                 queryClient.invalidateQueries({ queryKey: ["pendingFriendRequests"] });
@@ -90,13 +107,13 @@ export const useNotificationSocket = (userId: string) => {
             console.log("Status update received:", data);
             dispatch(updateUserStatus(data));
 
-            queryClient.setQueryData(["friends"], (oldData: any) => {
+            queryClient.setQueryData<FriendsResponse>(["friends"], (oldData) => {
                 if (!oldData) return oldData;
                 console.log("oldData", oldData)
 
                 return {
                     ...oldData,
-                    friends: oldData.friends.map((friend: any) =>
+                    friends: oldData.friends.map((friend) =>
                         friend.id === data.userId
                             ? { ...friend, status: data.status }
                             : friend

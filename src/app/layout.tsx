@@ -24,7 +24,7 @@ export const metaData: Metadata = {
 }
 const queryClient = new QueryClient();
 
-export default function layout({
+export default function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode

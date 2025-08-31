@@ -1,8 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/store/store'
 // hooks
 import { useFetchNotifications } from "@/hooks/users/useNotificationFetch"
 
@@ -13,13 +11,11 @@ import InboxModal from './modals/inbox-modal'
 
 
 function SubHeader() {
-    const [searchQuery, setSearchQuery] = useState("")
     const [isInboxOpen, setIsInboxOpen] = useState(false)
-    const reduxNotifications = useSelector((state: RootState) => state.notifications.list);
-
     const { data } = useFetchNotifications()
     const notifications = data?.notifications ?? [];
-    const hasUnread = notifications.some((notification: any) => !notification.read)
+    const hasUnread = notifications.some((notification) => !notification.read);
+
     return (
         <div className='bg-[#121214] flex items-center justify-between h-8'>
             <div></div>

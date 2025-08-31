@@ -239,7 +239,7 @@ export default function RegisterForm() {
                                     </FormControl>
                                     <div className="space-y-1 leading-none">
                                         <FormLabel className="text-[#b9bbbe] text-xs font-normal">
-                                            (Optional) It's okay to send me emails with Discord updates, tips, and special offers. You can opt
+                                            (Optional) It okay to send me emails with Discord updates, tips, and special offers. You can opt
                                             out at any time.
                                         </FormLabel>
                                     </div>
@@ -255,7 +255,7 @@ export default function RegisterForm() {
                             )}
                         </div>
                         <div className="text-xs text-[#b9bbbe] mt-2">
-                            By registering, you agree to Discord's{" "}
+                            By registering, you agree to Discord{" "}
                             <Link href="#" className="text-[#00a8fc] hover:underline">
                                 Terms of Service
                             </Link>{" "}

@@ -1,17 +1,11 @@
 import React from 'react'
-import { Metadata } from 'next'
+
 
 // components
 import { FriendsSidebar } from '@/features/channels/components/friend-sidebar'
 import ServerSidebar from '@/features/channels/components/server-sidebar'
 import UserProfile from '@/features/channels/components/user-profile'
 
-import SubHeader from '@/components/subHeader'
-
-export const metaData: Metadata = {
-    title: "Channels",
-    description: "channels for users"
-}
 
 export default function layout({
     children,

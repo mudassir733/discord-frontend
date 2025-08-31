@@ -25,7 +25,7 @@ interface HeaderProps {
 
 
 
-const header = ({ locale }: HeaderProps) => {
+const Header = ({ locale }: HeaderProps) => {
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
     const safeLocale = locale === 'en' || locale === 'fr' ? locale : 'en'
 
@@ -94,4 +94,4 @@ const header = ({ locale }: HeaderProps) => {
     )
 }
 
-export default header
+export default Header

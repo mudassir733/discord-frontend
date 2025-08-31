@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import Image from "next/image"
 import { Check, MoreHorizontal, Bell, Send, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useSelector } from "react-redux"
@@ -33,8 +32,7 @@ interface InboxModalProps {
 export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
     const [activeTab, setActiveTab] = useState<TabType>("for-you")
     const modalRef = useRef<HTMLDivElement>(null)
-    const reduxNotifications = useSelector((state: RootState) => state.notifications.list);
-    const { data, refetch, isLoading, error } = useFetchNotifications()
+    const { data, refetch } = useFetchNotifications()
     const { mutate: markAsRead } = useUpdateReadStatus();
 
     const notifications: Notification[] = data?.notifications ?? [];
@@ -84,10 +82,10 @@ export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                         <button
-                            type="button" 
+                            type="button"
                             className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1] hover:text-white"
                             title="Mark all as read"
-                            >
+                        >
                             <Check size={18} />
                         </button>
                         <div className="w-8 h-8 rounded-full bg-[#2b2d31] flex items-center justify-center text-[#b5bac1]">
@@ -189,7 +187,7 @@ export default function InboxModal({ isOpen, onClose }: InboxModalProps) {
                                         </div>
                                         <div className="text-xs text-[#b5bac1]">{new Date(notification.createdAt).toLocaleTimeString()}</div>
                                     </div>
-                                    <button 
+                                    <button
                                         type="button"
                                         title="More Options"
                                         className="w-8 h-8 rounded-full hover:bg-[#36393f] flex items-center justify-center text-[#b5bac1] hover:text-white">

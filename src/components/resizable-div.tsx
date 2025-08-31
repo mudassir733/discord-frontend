@@ -51,7 +51,7 @@ export default function ResizableDiv({
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
         };
-    }, [isDragging]);
+    }, [isDragging, handleMouseMove]);
 
     return (
         <div className="relative flex">

@@ -35,12 +35,12 @@ interface FriendProfileModalProps {
 
 const FriendProfileModal = ({ isOpen, onClose, selectedFriend }: FriendProfileModalProps) => {
 
-    if (!selectedFriend) return null;
-
     const initialTab: "about" | "noFriends" | "servers" =
-        selectedFriend.status === "offline" ? "noFriends" : "about";
+        selectedFriend?.status === "offline" ? "noFriends" : "about";
 
     const [activeTab, setActiveTab] = useState<"about" | "noFriends" | "servers">(initialTab);
+
+    if (!selectedFriend) return null;
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>

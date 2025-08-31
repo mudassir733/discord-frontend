@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 
 
 export default async function Home({ params }: { params: { locale: string } }) {
-  const safeLocale = await params.locale === "en" || await params.locale === "fr" ? params.locale : "en";
+  const safeLocale = params.locale === "en" || await params.locale === "fr" ? params.locale : "en";
 
   if (safeLocale !== "en" && safeLocale !== "fr") {
     return null

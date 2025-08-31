@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode'
 
 export interface JwtPayload {
     id: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export const useAuthUser = () => {

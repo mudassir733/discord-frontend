@@ -1,20 +1,16 @@
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
-// import { BiEditAlt, Edit } from "lucide-react";
-// import { MdPeopleAlt } from "react-icons/md";
-// import { TbColorPicker } from "react-icons/tb";
+
 
 interface CreateGroupChatProps {
   isOpen: boolean;
@@ -41,6 +37,7 @@ const CreateGroupChat = ({ isOpen, onClose, friends }: CreateGroupChatProps) => 
   // Calculate the number of friends that can still be added
   // Assuming the limit is 9 friends, you can adjust this as needed
   const friendCount = -selectedFriends.length + 9;
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

@@ -1,5 +1,5 @@
 "use client"
-import { X, ChevronRight, Users, Globe } from "lucide-react"
+import { ChevronRight, Users, Globe } from "lucide-react"
 import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import type { ServerType } from "../modals/create-server-modals"
@@ -10,7 +10,7 @@ interface ServerDetailsModalProps {
     onSelect: (type: ServerType) => void
 }
 
-export default function ServerDetailsModal({ onBack, onClose, onSelect }: ServerDetailsModalProps) {
+export default function ServerDetailsModal({ onBack, onSelect }: ServerDetailsModalProps) {
     return (
         <DialogContent className="bg-[#242429] border-none text-white p-0 max-w-md w-[430px] overflow-hidden animate-in fade-in slide-in-from-right-1/4 duration-300 ease-in-out">
             <div className="max-h-[580px] overflow-y-auto scrollbar-thin">

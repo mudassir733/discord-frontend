@@ -1,5 +1,5 @@
 "use client"
-import { X, ChevronRight, Plus, GamepadIcon, Heart, School } from "lucide-react"
+import { ChevronRight, Plus, GamepadIcon, Heart, School } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import ServerDetailsModal from "../modals/server-details-modals"

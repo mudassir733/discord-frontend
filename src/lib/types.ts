@@ -30,7 +30,7 @@ export interface FetchFriendRequest {
 }
 export interface JwtPayload {
     id: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface AcceptResponse {

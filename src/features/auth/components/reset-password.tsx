@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 // validation schema
@@ -31,7 +30,6 @@ import { toast } from "sonner"
 
 
 const ResetPassword = () => {
-    const router = useRouter()
 
     const form = useForm<ResetPasswordFormData>({
         resolver: zodResolver(resetPasswordSchema),

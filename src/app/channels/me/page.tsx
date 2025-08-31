@@ -14,7 +14,7 @@ import { RootState } from "@/store/store";
 
 // components
 import { ActiveNow } from "@/features/channels/components/activeNow";
-import StatusIndicator, { StatusType } from "@/components/status-indicator"
+import StatusIndicator from "@/components/status-indicator"
 
 // hooks
 import { useFriends } from "@/hooks/users/getFriends";
@@ -53,25 +53,17 @@ import { cn } from "@/lib/utils";
 
 
 
-interface FriendRequest {
-    id: string;
-    senderId: string;
-    senderUsername: string;
-    senderDisplayName: string;
-    senderProfilePicture: string;
-    status: "pending";
-    createdAt: string;
-}
-
 interface JwtPayload {
     id: string;
     [key: string]: any;
 }
 
-interface Friend {
+
+interface SearchUser {
     id: string;
     username: string;
-    status?: StatusType;
+    status: string;
+    lastActive: string;
 }
 
 export default function FriendsPage() {
@@ -82,7 +74,6 @@ export default function FriendsPage() {
     const [userId, setUserId] = useState<string | null>(null);
     const [pendingCount, setPendingCount] = useState(0);
     const [debounceValue, setDebouncedValue] = useState<string>("");
-    // const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);
 
     const debouncedSearch = useMemo(() =>
         debounce((value: string) => {
@@ -114,21 +105,21 @@ export default function FriendsPage() {
     }, []);
 
     // use hooks
-    const { data: invoices = [], isLoading: isLoadingInvoices, error: isErrorInvoices } = useFriends({
+    const { data: invoices = [] } = useFriends({
         enabled: !!userId,
         staleTime: 5 * 60 * 1000,
     });
     const { mutate: addFriend, isPending: isAddingFriend, error: addFriendError } = useAddFriend();
-    const { data: pendingRequests = [], refetch, isLoading: isLoadingRequests, error: requestsError } = usePendingFriendRequests({
+    const { data: pendingRequests = [], refetch } = usePendingFriendRequests({
         enabled: !!userId,
     });
 
 
     const { mutate: acceptRequest } = useAcceptFriendRequest();
     const { mutate: rejectRequest } = useRejectFriendRequest();
-    const { data: fetchFriendRequest = [], isLoading: isFetchingRequests, error: fetchSendRequestsError } = useFetchFriendRequests();
+    const { data: fetchFriendRequest = [] } = useFetchFriendRequests();
     useNotificationSocket(userId || "");
-    const { data: isSearchData = [], isLoading: isSearchLoading, error: isSearchError } = useQuery({
+    const { data: isSearchData = [] } = useQuery({
         queryKey: ["searchUserByUserName", debounceValue],
         queryFn: () => getSearchUserByUserName(debounceValue),
         enabled: !!debounceValue,
@@ -163,7 +154,7 @@ export default function FriendsPage() {
     const filteredSearchUser = searchQuery ? isSearchData ?? [] : filteredUsers ?? []
 
 
-    const handleSearchResult = (e: any) => {
+    const handleSearchResult = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
         debouncedSearch(e.target.value)
     };
@@ -408,7 +399,7 @@ export default function FriendsPage() {
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            filteredSearchUser.map((invoice: any) => (
+                                            filteredSearchUser.map((invoice: SearchUser) => (
                                                 <TableRow key={invoice.id} className="!border-zinc-700/90 cursor-pointer group hover:bg-zinc-800/90 hover:!border-zinc-700/90">
                                                     <TableCell className="font-medium !py-4 px-3 flex flex-col">
                                                         <div className="flex gap-2 relative items-center justify-between">

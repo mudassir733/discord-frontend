@@ -88,9 +88,6 @@ export default function FriendsListWithChat() {
         }
     }, [id]);
 
-    const handleSelectFriend = (friend: Friend) => {
-        router.push(`/channels/me/${friend.id}`);
-    };
 
     const handleBackToList = () => {
         router.push("/channels/me");
@@ -104,7 +101,7 @@ export default function FriendsListWithChat() {
                 {selectedFriend ? (
                     <div className="flex flex-col w-full h-full">
                         <div className="h-12 bg-[#1A1A1E] flex items-center px-4">
-                            <button 
+                            <button
                                 type="button"
                                 onClick={handleBackToList} className="text-[#b5bac1] hover:text-white mr-4"
                                 title="Back to Friends List"

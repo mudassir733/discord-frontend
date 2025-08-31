@@ -13,7 +13,6 @@ import DirectMessageChat from "@/features/channels/components/direct-message-cha
 import { useFriends } from "@/hooks/users/getFriends";
 import { useFetchDirectChannel } from "@/hooks/chat/useFetchDirectChannel";
 import { useAuthUser } from "@/hooks/auth/useAuthUser";
-import { useSocketConnection } from "@/hooks/chat/useSocketConnection";
 
 // DirectMessageChat expected friend type
 interface DirectMessageChatFriend {
@@ -28,7 +27,6 @@ interface DirectMessageChatFriend {
 export default function ChatPage() {
     const params = useParams();
     const { id } = params as { id?: string } || { id: null };
-    const { userId } = useAuthUser();
 
 
     // local states

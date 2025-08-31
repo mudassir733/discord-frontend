@@ -55,7 +55,7 @@ import { cn } from "@/lib/utils";
 
 interface JwtPayload {
     id: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 

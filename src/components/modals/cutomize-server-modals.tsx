@@ -14,7 +14,7 @@ interface CustomizeServerModalProps {
     onCreateServer: (serverName: string) => void
 }
 
-export default function CustomizeServerModal({ onBack, onClose, onCreateServer }: CustomizeServerModalProps) {
+export default function CustomizeServerModal({ onBack, onCreateServer }: CustomizeServerModalProps) {
     const [serverName, setServerName] = useState("Mudassir Ali's server")
     const [previewUrl, setPreviewUrl] = useState(null);
 
@@ -101,7 +101,7 @@ export default function CustomizeServerModal({ onBack, onClose, onCreateServer }
                             required
                         />
                         <p className="text-xs text-[#b5bac1] mt-2">
-                            By creating a server, you agree to Discord's{" "}
+                            By creating a server, you agree to Discord
                             <a href="#" className="text-[#00a8fc] hover:underline">
                                 Community Guidelines
                             </a>

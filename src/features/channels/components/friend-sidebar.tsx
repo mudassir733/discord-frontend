@@ -41,11 +41,10 @@ export function FriendsSidebar() {
     const { id } = params as { id?: string };
 
 
-    const { data: data = [], isLoading, error } = useFriends({
+    const { data: data = [] } = useFriends({
         enabled: !!id,
         staleTime: 5 * 60 * 1000,
     });
-    const otherUserUsername = data.find((friend) => friend.id !== id)?.username;
 
 
 

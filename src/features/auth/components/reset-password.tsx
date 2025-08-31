@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 // validation schema
 import { resetPasswordSchema, ResetPasswordFormData } from '@/lib/schemas'

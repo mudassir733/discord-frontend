@@ -3,10 +3,8 @@
 import { useState, useRef, useEffect } from "react"
 import { Check, MoreHorizontal, Bell, Send, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useSelector } from "react-redux"
 
 // store
-import { RootState } from "@/store/store"
 
 
 

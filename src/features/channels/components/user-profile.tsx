@@ -9,7 +9,7 @@ import { useFetchUserById } from '@/hooks/users/useFetchUserById'
 // assests
 
 // ui components
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Headphones, Mic, Settings } from 'lucide-react'
 
 
@@ -47,7 +47,7 @@ function UserProfile() {
 
         <div className="p-3 bg-[#232428] rounded-lg w-full flex items-center gap-2" >
             <Avatar className='bg-[#6765D3] rounded-full w-10 h-10 flex items-center justify-center'>
-                <AvatarImage src={`https://ui-avatars.com/api/?name=${data?.username}&background=random`} alt="User" 
+                <AvatarImage src={`https://ui-avatars.com/api/?name=${data?.username}&background=random`} alt="User"
                     width={80}
                     height={80}
                     className="w-10 h-10 rounded-full border-[#232428] object-cover"
